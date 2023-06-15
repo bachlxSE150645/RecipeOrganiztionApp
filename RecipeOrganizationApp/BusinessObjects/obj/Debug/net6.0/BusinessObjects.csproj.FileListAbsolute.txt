@@ -1,0 +1,15 @@
+D:\FPTCurrentLearning\Summer_2023\PRN231\RecipeOrganiztionApp\RecipeOrganizationApp\BusinessObjects\obj\Debug\net6.0\BusinessObjects.csproj.AssemblyReference.cache
+D:\FPTCurrentLearning\Summer_2023\PRN231\RecipeOrganiztionApp\RecipeOrganizationApp\BusinessObjects\obj\Debug\net6.0\BusinessObjects.GeneratedMSBuildEditorConfig.editorconfig
+D:\FPTCurrentLearning\Summer_2023\PRN231\RecipeOrganiztionApp\RecipeOrganizationApp\BusinessObjects\obj\Debug\net6.0\BusinessObjects.AssemblyInfoInputs.cache
+D:\FPTCurrentLearning\Summer_2023\PRN231\RecipeOrganiztionApp\RecipeOrganizationApp\BusinessObjects\obj\Debug\net6.0\BusinessObjects.AssemblyInfo.cs
+D:\FPTCurrentLearning\Summer_2023\PRN231\RecipeOrganiztionApp\RecipeOrganizationApp\BusinessObjects\obj\Debug\net6.0\BusinessObjects.csproj.CoreCompileInputs.cache
+D:\FPTCurrentLearning\Summer_2023\PRN231\RecipeOrganiztionApp\RecipeOrganizationApp\BusinessObjects\bin\Debug\net6.0\appsettings.json
+D:\FPTCurrentLearning\Summer_2023\PRN231\RecipeOrganiztionApp\RecipeOrganizationApp\BusinessObjects\bin\Debug\net6.0\BusinessObjects.deps.json
+D:\FPTCurrentLearning\Summer_2023\PRN231\RecipeOrganiztionApp\RecipeOrganizationApp\BusinessObjects\bin\Debug\net6.0\BusinessObjects.runtimeconfig.json
+D:\FPTCurrentLearning\Summer_2023\PRN231\RecipeOrganiztionApp\RecipeOrganizationApp\BusinessObjects\bin\Debug\net6.0\BusinessObjects.dll
+D:\FPTCurrentLearning\Summer_2023\PRN231\RecipeOrganiztionApp\RecipeOrganizationApp\BusinessObjects\bin\Debug\net6.0\BusinessObjects.pdb
+D:\FPTCurrentLearning\Summer_2023\PRN231\RecipeOrganiztionApp\RecipeOrganizationApp\BusinessObjects\obj\Debug\net6.0\BusinessObjects.dll
+D:\FPTCurrentLearning\Summer_2023\PRN231\RecipeOrganiztionApp\RecipeOrganizationApp\BusinessObjects\obj\Debug\net6.0\refint\BusinessObjects.dll
+D:\FPTCurrentLearning\Summer_2023\PRN231\RecipeOrganiztionApp\RecipeOrganizationApp\BusinessObjects\obj\Debug\net6.0\BusinessObjects.pdb
+D:\FPTCurrentLearning\Summer_2023\PRN231\RecipeOrganiztionApp\RecipeOrganizationApp\BusinessObjects\obj\Debug\net6.0\BusinessObjects.genruntimeconfig.cache
+D:\FPTCurrentLearning\Summer_2023\PRN231\RecipeOrganiztionApp\RecipeOrganizationApp\BusinessObjects\obj\Debug\net6.0\ref\BusinessObjects.dll
