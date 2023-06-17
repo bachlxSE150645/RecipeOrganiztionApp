@@ -1,6 +1,6 @@
 ## RecipeOrganiztionApp
 # Technology:
-- Back-end: SQL Server 2022, .NET 6.0, API+Authenticate \
+- Back-end: SQL Server 2022, .NET 6.0, API+Authenticate 
 - Front-end: ReactJS
 ***
 # How to migration:
