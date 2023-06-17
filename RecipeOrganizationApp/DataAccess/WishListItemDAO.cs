@@ -57,7 +57,7 @@ namespace DataAccess
         }
 
         //Get Wish List Item by Recipe ID and Wish List ID
-        public static WishListItem GetWishListItemsByRecIdAndIngId(string recId, string WSLId)
+        public static WishListItem GetWishListItemsByRecIdAndWSLId(string recId, string WSLId)
         {
             var wishListItem = new WishListItem();
             try
