@@ -1,10 +1,32 @@
 ﻿using BusinessObjects;
+using BusinessObjects.MapData;
 using System.Linq.Expressions;
 
 namespace DataAccess
 {
     public class RecipeDetailDAO
     {
+        private static RecipeDetailDAO instance;
+        private readonly AppDBContext _context;
+        //private readonly IMapper _mapper;
+
+        public RecipeDetailDAO(AppDBContext context)
+        {
+            this._context = context;
+        }
+
+        public static RecipeDetailDAO GetInstance(AppDBContext dbContext)
+        {
+
+            if (instance == null)
+            {
+                instance = new RecipeDetailDAO(dbContext);
+            }
+
+            return instance;
+        }
+
+
         //Get All Recipe Details
         public static List<RecipeDetail> GetRecipeDetails()
         {
@@ -73,15 +95,20 @@ namespace DataAccess
         }
 
         //Post new Recipe Detail
-        public static void AddRecipeDetail(RecipeDetail recipeDetail)
+        public async Task<RecipeDetail> AddRecipeDetail(RecipeDetailData inf)
         {
             try
             {
-                using(var context = new AppDBContext())
+                var recipeDetail = new RecipeDetail
                 {
-                    context.RecipeDetails.Add(recipeDetail);
-                    context.SaveChanges();
-                }
+                    IngredientID = inf.IngredientID,
+                    RecipeID = inf.RecipeID,
+                    Quantity = inf.Quantity,
+                    Unit = inf.Unit
+                };
+                _context.RecipeDetails.Add(recipeDetail);
+                _context.SaveChanges();
+                return recipeDetail;
             }catch(Exception ex)
             {
                 throw new Exception(ex.Message);

@@ -10,8 +10,8 @@ namespace Repository.Interfaces
     public interface IIngredientRepository
     {
         List<Ingredient> GetIngredients();
-        Ingredient GetIngredientsById(string id);
-        void AddIngredient(Ingredient ingredient);
+        Ingredient GetIngredientsById(Guid id);
+        Task<Ingredient> AddIngredient(string ingredientName);
         void UpdateIngredient(Ingredient Ingredient);
         void DeleteIngredient(Ingredient Ingredient);
     }

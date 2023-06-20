@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.MapData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Repository.Interfaces
         List<RecipeDetail> GetRecipeDetailsByRecipeId(string recipeId);
         List<RecipeDetail> GetRecipeDetailsByIngredientId(string ingredientId);
         RecipeDetail GetRecipeDetailsByRecIdAndIngId(string recId, string IngId);
-        void AddRecipeDetail(RecipeDetail recipeDetail);
+        Task<RecipeDetail> AddRecipeDetail(RecipeDetailData recipeDetail);
         void UpdateRecipeDetail(RecipeDetail recipeDetail);
         void DeleteRecipeDetail(RecipeDetail recipeDetail);
     }
