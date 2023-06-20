@@ -1,9 +1,30 @@
-﻿using BusinessObjects;
+﻿using AutoMapper;
+using BusinessObjects;
 
 namespace DataAccess
 {
     public class AccountDAO
     {
+        private static AccountDAO instance;
+        private readonly AppDBContext _context;
+        //private readonly IMapper _mapper;
+
+        public AccountDAO(AppDBContext context)
+        {
+            this._context = context;
+        }
+
+        public static AccountDAO GetInstance(AppDBContext dbContext)
+        {
+
+            if (instance == null)
+            {
+                instance = new AccountDAO(dbContext);
+            }
+
+            return instance;
+        }
+
         //Get All Accounts
         public static List<Account> GetAccounts()
         {
@@ -54,24 +75,24 @@ namespace DataAccess
             return account;
         }
         //Post new account
-        public static void AddAccount(Account account)
+        public async Task<Account> AddAccount(SignUpData account)
         {
             try
             {
-                using(var context = new AppDBContext())
-                {
-                    var Account = new Account
-                    {
-                        UserName = account.UserName,
-                        Password = account.Password,
-                        Email = account.Email,
-                        RoleID = account.RoleID,
-                        Phone = account.Phone,
-                        Status = account.Status
-                    };
-                    context.Accounts.Add(Account);
-                    context.SaveChanges();
-                }
+                var newAcc = new Account();
+
+                newAcc.Email = account.Email;
+                newAcc.Password = account.Password;
+                newAcc.Phone = account.Phone;
+                newAcc.UserName = account.UserName;
+                newAcc.AccountID = Guid.NewGuid();
+                newAcc.Status = true;
+                newAcc.Role = _context.Roles!.Where(c => c.RoleName == "US").FirstOrDefault();
+
+                _context.Accounts!.Add(newAcc);
+                await _context.SaveChangesAsync();
+                return newAcc;
+
             } catch(Exception ex)
             {
                 throw new Exception(ex.Message);

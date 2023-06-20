@@ -4,6 +4,26 @@ namespace DataAccess
 {
     public class IngredientDAO
     {
+
+        private static IngredientDAO instance;
+        private readonly AppDBContext _context;
+
+        public IngredientDAO(AppDBContext context)
+        {
+            this._context = context;
+        }
+
+        public static IngredientDAO GetInstance(AppDBContext dbContext)
+        {
+
+            if (instance == null)
+            {
+                instance = new IngredientDAO(dbContext);
+            }
+
+            return instance;
+        }
+
         //Get All Ingredients
         public static List<Ingredient> GetIngredients()
         {
@@ -21,15 +41,14 @@ namespace DataAccess
             return listIngredients;
         }
         //Get Ingredient matches ID
-        public static Ingredient GetIngredientsById(string id)
+        public Ingredient GetIngredientsById(Guid id)
         {
             var Ingredient = new Ingredient();
             try
             {
-                using (var context = new AppDBContext())
-                {
-                    Ingredient = context.Ingredients.Where(x => x.IngredientID.Equals(id)).SingleOrDefault();
-                }
+                
+                    Ingredient = _context.Ingredients.Where(x => x.IngredientID == id).SingleOrDefault();
+                
             }
             catch (Exception ex)
             {
@@ -38,20 +57,19 @@ namespace DataAccess
             return Ingredient;
         }
         //Post new ingredient
-        public static void AddIngredient(Ingredient ingredient)
+        public async Task<Ingredient> AddIngredient(string ingredient)
         {
             try
             {
-                using(var context = new AppDBContext())
-                {
                     var Ingredient = new Ingredient
                     {
-                        IngredientName = ingredient.IngredientName,
-                        Status = ingredient.Status,
+                        IngredientID = Guid.NewGuid(),
+                        IngredientName = ingredient,
+                        Status = true,
                     };
-                    context.Ingredients.Add(Ingredient);
-                    context.SaveChanges();
-                }
+                    _context.Ingredients.Add(Ingredient);
+                    _context.SaveChanges();
+                    return Ingredient;
             } catch(Exception ex)
             {
                 throw new Exception(ex.Message);

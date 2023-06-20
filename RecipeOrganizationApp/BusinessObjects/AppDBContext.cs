@@ -7,6 +7,17 @@ namespace BusinessObjects
     public class AppDBContext : DbContext
     {
         public AppDBContext() { }
+
+        public AppDBContext(string connectionString)
+        {
+            Database.SetConnectionString(connectionString);
+        }
+
+        public AppDBContext(DbContextOptions<AppDBContext> options)
+           : base(options)
+        {
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var builder = new ConfigurationBuilder()

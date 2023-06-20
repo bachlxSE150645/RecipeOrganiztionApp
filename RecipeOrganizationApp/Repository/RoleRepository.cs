@@ -11,9 +11,17 @@ namespace Repository
 {
     public class RoleRepository : IRoleRepository
     {
+
+        public RoleRepository(AppDBContext dbContext)
+        {
+            _context = RoleDAO.GetInstance(dbContext);
+        }
+
+        private readonly RoleDAO _context;
+
         public List<Role> GetRoles() => RoleDAO.GetRoles();
         public Role GetRoleById(string id) => RoleDAO.GetRoleById(id);
-        public void AddRole(Role role) => RoleDAO.AddRole(role); 
+        public Role AddRole(string roleName) => _context.AddRoleAsync(roleName);
         public void UpdateRole(Role role) => RoleDAO.UpdateRole(role);
         public void DeleteRole(Role role) => RoleDAO.DeleteRole(role);
     }

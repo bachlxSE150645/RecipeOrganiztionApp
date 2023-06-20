@@ -1,9 +1,31 @@
 ﻿using BusinessObjects;
+using BusinessObjects.MapData;
 
 namespace DataAccess
 {
     public class RecipeDAO
     {
+        private static RecipeDAO instance;
+        private readonly AppDBContext _context;
+        //private readonly IMapper _mapper;
+
+        public RecipeDAO(AppDBContext context)
+        {
+            this._context = context;
+        }
+
+        public static RecipeDAO GetInstance(AppDBContext dbContext)
+        {
+
+            if (instance == null)
+            {
+                instance = new RecipeDAO(dbContext);
+            }
+
+            return instance;
+        }
+
+
         //Get All Recipes
         public static List<Recipe> GetRecipes()
         {
@@ -38,29 +60,30 @@ namespace DataAccess
             return recipe;
         }
         //Post new Recipe
-        public static void AddRecipe(Recipe recipe)
+        public async Task<Recipe> AddRecipe(RecipeData recipe)
         {
             try
             {
-                using(var context = new AppDBContext())
+                var recipeAdd = new Recipe
                 {
-                    var recipeAdd = new Recipe
-                    {
-                        RecipeName = recipe.RecipeName,
-                        RecipeImage = recipe.RecipeImage,
-                        Description = recipe.Description,
-                        AccountID = recipe.AccountID,
-                        Status = recipe.Status,
-                        CreateDate = recipe.CreateDate,
-                    };
-                    context.Recipes.Add(recipeAdd);
-                    context.SaveChanges();
-                }
-            } catch(Exception ex)
+                    RecipeID = Guid.NewGuid(),
+                    RecipeName = recipe.RecipeName,
+                    RecipeImage = recipe.RecipeImage,
+                    Description = recipe.Description,
+                    AccountID = recipe.AccountID,
+                    Status = "waitting",
+                    CreateDate = DateTime.Now
+                };
+                _context.Recipes.Add(recipeAdd);
+                _context.SaveChanges();
+                return recipeAdd;
+            }
+            catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
+        
         //Put existing Recipe
         public static void UpdateRecipe(Recipe recipe)
         {

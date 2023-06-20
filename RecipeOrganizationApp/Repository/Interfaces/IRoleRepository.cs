@@ -11,7 +11,7 @@ namespace Repository.Interfaces
     {
         List<Role> GetRoles();
         Role GetRoleById(string id);
-        void AddRole(Role role);
+        Role AddRole(string roleName);
         void UpdateRole(Role role);
         void DeleteRole(Role role);
     }

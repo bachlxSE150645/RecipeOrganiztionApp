@@ -1,9 +1,5 @@
 ﻿using BusinessObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BusinessObjects.MapData;
 
 namespace Repository.Interfaces
 {
@@ -11,7 +7,7 @@ namespace Repository.Interfaces
     {
         List<Recipe> GetRecipes();
         Recipe GetRecipesById(string id);
-        void AddRecipe(Recipe recipe);
+        Task<Recipe> AddRecipe(RecipeData recipe);
         void UpdateRecipe(Recipe recipe);
         void DeleteRecipe(Recipe recipe);
     }

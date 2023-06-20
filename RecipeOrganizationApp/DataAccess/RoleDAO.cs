@@ -1,8 +1,28 @@
 ﻿using BusinessObjects;
+
 namespace DataAccess
 {
     public class RoleDAO
     {
+        private static RoleDAO instance;
+        private readonly AppDBContext _context;
+
+        public RoleDAO(AppDBContext context)
+        {
+            this._context = context;
+        }
+
+        public static RoleDAO GetInstance(AppDBContext dbContext)
+        {
+
+            if (instance == null)
+            {
+                instance = new RoleDAO(dbContext);
+            }
+
+            return instance;
+        }
+
         //Get all Roles
         public static List<Role> GetRoles()
         {
@@ -36,19 +56,21 @@ namespace DataAccess
             return role;
         }
         //Post new Role
-        public static void AddRole(Role role)
+        public Role AddRoleAsync(string roleName)
         {
             try
             {
-                using(var context = new AppDBContext()) {
-                    if(context.Roles.SingleOrDefault(x=>x.RoleName == role.RoleName) == null) 
-                    {
-                        var newRole = new Role { RoleName= role.RoleName };
-                        context.Roles.Add(newRole);
-                        context.SaveChanges();
-                    }
-                }
-            } catch(Exception ex)
+                var newRole = new Role
+                {
+                    RoleID = Guid.NewGuid(),
+                    RoleName = roleName
+                };
+                    _context.Roles.Add(newRole);
+                    _context.SaveChanges();
+                    return newRole;
+                
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
