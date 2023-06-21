@@ -11,10 +11,17 @@ namespace Repository
 {
     public class ReviewRepository : IReviewRepository
     {
-        public List<Review> GetRecipeDetails() => ReviewDAO.GetRecipeDetails();
-        public List<Review> GetRecipeDetailsByRecipeId(string reviewId) => ReviewDAO.GetRecipeDetailsByRecipeId(reviewId);
-        public void AddReview(Review review) => ReviewDAO.AddReview(review);
-        public void UpdateReview(Review review) => ReviewDAO.UpdateReview(review);
-        public void DeleteReview(Review review) => ReviewDAO.DeleteReview(review);
+        public ReviewRepository(AppDBContext dbContext)
+        {
+            _context = ReviewDAO.GetInstance(dbContext);
+        }
+
+        private readonly ReviewDAO _context;
+
+        public List<Review> GetRecipeDetails() => _context.GetRecipeDetails();
+        public List<Review> GetRecipeDetailsByRecipeId(string reviewId) => _context.GetRecipeDetailsByRecipeId(reviewId);
+        public void AddReview(Review review) => _context.AddReview(review);
+        public void UpdateReview(Review review) => _context.UpdateReview(review);
+        public void DeleteReview(Review review) => _context.DeleteReview(review);
     }
 }

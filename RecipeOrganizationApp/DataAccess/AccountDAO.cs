@@ -26,15 +26,13 @@ namespace DataAccess
         }
 
         //Get All Accounts
-        public static List<Account> GetAccounts()
+        public List<Account> GetAccounts()
         {
             var listAccounts = new List<Account>();
             try
             {
-                using(var context = new AppDBContext())
-                {
-                    listAccounts = context.Accounts.ToList();
-                }
+                listAccounts = _context.Accounts.ToList();
+                
             } catch(Exception ex)
             {
                 throw new Exception();
@@ -42,15 +40,14 @@ namespace DataAccess
             return listAccounts;
         }
         //Get Account matches ID
-        public static Account GetAccountsById(string id)
+        public Account GetAccountsById(Guid id)
         {
             var Account = new Account();
             try
             {
-                using (var context = new AppDBContext())
-                {
-                    Account = context.Accounts.Where(x => x.AccountID.Equals(id)).SingleOrDefault();
-                }
+                
+                    Account = _context.Accounts.Where(x => x.AccountID == id ).SingleOrDefault();
+                
             }
             catch (Exception ex)
             {
@@ -59,15 +56,14 @@ namespace DataAccess
             return Account;
         }
         //Get Account by username and password
-        public static Account GetAccountByEmailAndPassword(string email, string password)
+        public  Account GetAccountByEmailAndPassword(string email, string password)
         {
             var account = new Account();
             try
             {
-                using(var context = new AppDBContext())
-                {
-                    account = context.Accounts.Where(x => x.Email.Equals(email) && x.Password.Equals(password)).FirstOrDefault();
-                }
+                
+                    account = _context.Accounts.Where(x => x.Email.Equals(email) && x.Password.Equals(password)).FirstOrDefault();
+                
             } catch (Exception ex)
             {
                 throw new Exception();
@@ -99,39 +95,38 @@ namespace DataAccess
             }
         }
         //Put existing account
-        public static void UpdateAccount(Account account)
+        public Account UpdateAccount(Account account)
         {
             try
             {
-                using (var context = new AppDBContext())
-                {
-                    var acc = context.Accounts.SingleOrDefault(x => x.AccountID == account.AccountID);
+                    var acc = _context.Accounts.SingleOrDefault(x => x.AccountID == account.AccountID);
                     if (acc != null)
                     {
-                        context.Entry<Account>(account).State =
+                        _context.Entry<Account>(account).State =
                             Microsoft.EntityFrameworkCore.EntityState.Modified;
-                        context.SaveChanges();
+                        _context.SaveChanges();
+                    return acc;
                     }
-                }
+                return null;
             } catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
         //Delete existing account
-        public static void DeleteAccount(Account account)
+        public bool DeleteAccount(Account account)
         {
             try
             {
-                using (var context = new AppDBContext())
-                {
-                    var acc = context.Accounts.SingleOrDefault(x => x.AccountID.Equals(account.AccountID));
+                
+                    var acc = _context.Accounts.SingleOrDefault(x => x.AccountID.Equals(account.AccountID));
                     if(acc != null)
                     {
-                        context.Accounts.Remove(acc);
-                        context.SaveChanges();
+                        _context.Accounts.Remove(acc);
+                        _context.SaveChanges();
+                    return true;
                     }
-                }
+                return false;
             } catch (Exception ex)
             {
                 throw new Exception(ex.Message);

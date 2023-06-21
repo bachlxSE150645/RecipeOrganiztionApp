@@ -25,15 +25,14 @@ namespace DataAccess
         }
 
         //Get All Ingredients
-        public static List<Ingredient> GetIngredients()
+        public  List<Ingredient> GetIngredients()
         {
             var listIngredients = new List<Ingredient>();
             try
             {
-                using(var context = new AppDBContext())
-                {
-                    listIngredients = context.Ingredients.ToList();
-                }
+                
+                    listIngredients = _context.Ingredients.ToList();
+                
             } catch(Exception ex)
             {
                 throw new Exception();
@@ -76,39 +75,37 @@ namespace DataAccess
             }
         }
         //Put existing Ingredient
-        public static void UpdateIngredient(Ingredient Ingredient)
+        public void UpdateIngredient(Ingredient Ingredient)
         {
             try
             {
-                using (var context = new AppDBContext())
-                {
-                    var ingredient = context.Ingredients.SingleOrDefault(x => x.IngredientID == Ingredient.IngredientID);
+                
+                    var ingredient = _context.Ingredients.SingleOrDefault(x => x.IngredientID == Ingredient.IngredientID);
                     if (ingredient != null)
                     {
-                        context.Entry<Ingredient>(Ingredient).State =
+                        _context.Entry<Ingredient>(Ingredient).State =
                             Microsoft.EntityFrameworkCore.EntityState.Modified;
-                        context.SaveChanges();
+                        _context.SaveChanges();
                     }
-                }
+                
             } catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
         //Delete existing Ingredient
-        public static void DeleteIngredient(Ingredient Ingredient)
+        public void DeleteIngredient(Ingredient Ingredient)
         {
             try
             {
-                using (var context = new AppDBContext())
-                {
-                    var ingredient = context.Ingredients.SingleOrDefault(x => x.IngredientID.Equals(Ingredient.IngredientID));
+                
+                    var ingredient = _context.Ingredients.SingleOrDefault(x => x.IngredientID.Equals(Ingredient.IngredientID));
                     if(ingredient != null)
                     {
-                        context.Ingredients.Remove(ingredient);
-                        context.SaveChanges();
+                        _context.Ingredients.Remove(ingredient);
+                        _context.SaveChanges();
                     }
-                }
+                
             } catch (Exception ex)
             {
                 throw new Exception(ex.Message);

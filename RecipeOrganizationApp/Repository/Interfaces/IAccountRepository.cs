@@ -11,10 +11,10 @@ namespace Repository.Interfaces
     public interface IAccountRepository
     {
         List<Account> GetAccounts();
-        Account GetAccountsById(string id);
+        Account GetAccountsById(Guid id);
         Account GetAccountByEmailAndPassword(string email, string password);
         Task<Account> AddAccount(SignUpData account);
-        void UpdateAccount(Account account);
-        void DeleteAccount(Account account);
+        Account UpdateAccount(Account account);
+        bool DeleteAccount(Account account);
     }
 }

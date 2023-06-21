@@ -4,16 +4,34 @@ namespace DataAccess
 {
     public class MealDAO
     {
+        private static MealDAO instance;
+        private readonly AppDBContext _context;
+
+        public MealDAO(AppDBContext context)
+        {
+            this._context = context;
+        }
+
+        public static MealDAO GetInstance(AppDBContext dbContext)
+        {
+
+            if (instance == null)
+            {
+                instance = new MealDAO(dbContext);
+            }
+
+            return instance;
+        }
+
         //Get All Meals
-        public static List<Meal> GetMeals()
+        public List<Meal> GetMeals()
         {
             var listMeals = new List<Meal>();
             try
             {
-                using(var context = new AppDBContext())
-                {
-                    listMeals = context.Meals.ToList();
-                }
+                
+                    listMeals = _context.Meals.ToList();
+                
             } catch(Exception ex)
             {
                 throw new Exception();
@@ -21,15 +39,14 @@ namespace DataAccess
             return listMeals;
         }
         //Get Meal matches ID
-        public static Meal GetMealsById(string id)
+        public Meal GetMealsById(string id)
         {
             var meal = new Meal();
             try
             {
-                using (var context = new AppDBContext())
-                {
-                    meal = context.Meals.Where(x => x.MealID.Equals(id)).SingleOrDefault();
-                }
+                
+                    meal = _context.Meals.Where(x => x.MealID.Equals(id)).SingleOrDefault();
+                
             }
             catch (Exception ex)
             {
@@ -38,12 +55,11 @@ namespace DataAccess
             return meal;
         }
         //Post new Meal
-        public static void AddMeal(Meal meal)
+        public void AddMeal(Meal meal)
         {
             try
             {
-                using(var context = new AppDBContext())
-                {
+                
                     var mealAdd = new Meal
                     {
                         AccountID = meal.AccountID,
@@ -52,48 +68,46 @@ namespace DataAccess
                         Description = meal.Description,
                         Status = meal.Status,
                     };
-                    context.Meals.Add(mealAdd);
-                    context.SaveChanges();
-                }
+                    _context.Meals.Add(mealAdd);
+                    _context.SaveChanges();
+                
             } catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
         //Put existing Meal
-        public static void UpdateMeal(Meal meal)
+        public  void UpdateMeal(Meal meal)
         {
             try
             {
-                using (var context = new AppDBContext())
-                {
-                    var Meal = context.Meals.SingleOrDefault(x => x.MealID == meal.MealID);
+                
+                    var Meal = _context.Meals.SingleOrDefault(x => x.MealID == meal.MealID);
                     if (Meal != null)
                     {
-                        context.Entry<Meal>(meal).State =
+                        _context.Entry<Meal>(meal).State =
                             Microsoft.EntityFrameworkCore.EntityState.Modified;
-                        context.SaveChanges();
+                        _context.SaveChanges();
                     }
-                }
+                
             } catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
         //Delete existing Meal
-        public static void DeleteMeal(Meal meal)
+        public void DeleteMeal(Meal meal)
         {
             try
             {
-                using (var context = new AppDBContext())
-                {
-                    var Meal = context.Meals.SingleOrDefault(x => x.MealID.Equals(meal.MealID));
+                
+                    var Meal = _context.Meals.SingleOrDefault(x => x.MealID.Equals(meal.MealID));
                     if(Meal != null)
                     {
-                        context.Meals.Remove(Meal);
-                        context.SaveChanges();
+                        _context.Meals.Remove(Meal);
+                        _context.SaveChanges();
                     }
-                }
+                
             } catch (Exception ex)
             {
                 throw new Exception(ex.Message);

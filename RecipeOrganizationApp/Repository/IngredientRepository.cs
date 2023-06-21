@@ -18,10 +18,10 @@ namespace Repository
 
         private readonly IngredientDAO _context;
 
-        public List<Ingredient> GetIngredients() => IngredientDAO.GetIngredients();
+        public List<Ingredient> GetIngredients() => _context.GetIngredients();
         public Ingredient GetIngredientsById(Guid id) => _context.GetIngredientsById(id);
         public Task<Ingredient> AddIngredient(string ingredientName) => _context.AddIngredient(ingredientName);
-        public void UpdateIngredient(Ingredient Ingredient) => IngredientDAO.UpdateIngredient(Ingredient);
-        public void DeleteIngredient(Ingredient Ingredient) => IngredientDAO.DeleteIngredient(Ingredient);
+        public void UpdateIngredient(Ingredient Ingredient) => _context.UpdateIngredient(Ingredient);
+        public void DeleteIngredient(Ingredient Ingredient) => _context.DeleteIngredient(Ingredient);
     }
 }
