@@ -5,16 +5,34 @@ namespace DataAccess
 {
     public class ReviewDAO
     {
+        private static ReviewDAO instance;
+        private readonly AppDBContext _context;
+
+        public ReviewDAO(AppDBContext context)
+        {
+            this._context = context;
+        }
+
+        public static ReviewDAO GetInstance(AppDBContext dbContext)
+        {
+
+            if (instance == null)
+            {
+                instance = new ReviewDAO(dbContext);
+            }
+
+            return instance;
+        }
+
         //Get All Reviews
-        public static List<Review> GetRecipeDetails()
+        public List<Review> GetRecipeDetails()
         {
             var list = new List<Review>();
             try
             {
-                using (var context = new AppDBContext())
-                {
-                    list = context.Reviews.ToList();
-                }
+                
+                    list = _context.Reviews.ToList();
+                
             } catch(Exception ex) {
                 throw new Exception(ex.Message);
             }
@@ -22,15 +40,14 @@ namespace DataAccess
         }
 
         //Get Reviews by Review ID
-        public static List<Review> GetRecipeDetailsByRecipeId(string reviewId)
+        public List<Review> GetRecipeDetailsByRecipeId(string reviewId)
         {
             var listReview = new List<Review>();
             try
             {
-                using(var context = new AppDBContext())
-                {
-                    listReview = context.Reviews.Where(x => x.ReviewID.ToString() == reviewId).ToList();
-                }
+                
+                    listReview = _context.Reviews.Where(x => x.ReviewID.ToString() == reviewId).ToList();
+                
             } catch(Exception ex) {
                 throw new Exception(ex.Message);
             }
@@ -38,12 +55,11 @@ namespace DataAccess
         }
 
         //Post new Review
-        public static void AddReview(Review review)
+        public  void AddReview(Review review)
         {
             try
             {
-                using(var context = new AppDBContext())
-                {
+                
                     var reviewAdd = new Review
                     {
                         AccountID = review.AccountID,
@@ -51,9 +67,9 @@ namespace DataAccess
                         ReviewContent = review.ReviewContent,
                         Rating = review.Rating,
                     };
-                    context.Reviews.Add(review);
-                    context.SaveChanges();
-                }
+                    _context.Reviews.Add(review);
+                    _context.SaveChanges();
+                
             }catch(Exception ex)
             {
                 throw new Exception(ex.Message);
@@ -61,20 +77,19 @@ namespace DataAccess
         }
 
         //Put existing Review
-        public static void UpdateReview(Review review)
+        public void UpdateReview(Review review)
         {
             try
             {
-                using (var context = new AppDBContext())
-                {
-                    var reviewCheck = context.Reviews.SingleOrDefault(x => x.ReviewID == review.ReviewID);
+                
+                    var reviewCheck = _context.Reviews.SingleOrDefault(x => x.ReviewID == review.ReviewID);
                     if (reviewCheck != null)
                     {
-                        context.Entry<Review>(review).State =
+                            _context.Entry<Review>(review).State =
                             Microsoft.EntityFrameworkCore.EntityState.Modified;
-                        context.SaveChanges();
+                        _context.SaveChanges();
                     }
-                }
+                
             }
             catch (Exception ex)
             {
@@ -83,19 +98,18 @@ namespace DataAccess
         }
         
         //Delete existing Review
-        public static void DeleteReview(Review review)
+        public void DeleteReview(Review review)
         {
             try
             {
-                using (var context = new AppDBContext())
-                {
-                    var reviewCheck = context.Reviews.SingleOrDefault(x => x.ReviewID.Equals(review.RecipeID));
+                
+                    var reviewCheck = _context.Reviews.SingleOrDefault(x => x.ReviewID.Equals(review.RecipeID));
                     if (reviewCheck != null)
                     {
-                        context.Reviews.Remove(reviewCheck);
-                        context.SaveChanges();
+                        _context.Reviews.Remove(reviewCheck);
+                        _context.SaveChanges();
                     }
-                }
+                
             }
             catch (Exception ex)
             {

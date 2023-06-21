@@ -20,6 +20,7 @@ namespace APIRAO.Controllers
             accRepo = new AccountRepository(dbContext);
         }
 
+
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginData inf)
         {
@@ -44,5 +45,32 @@ namespace APIRAO.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAccounts()
+        {
+            try
+            {
+                return Ok(accRepo.GetAccounts());
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("AccountID")]
+        public async Task<IActionResult> GetAccounts(Guid AccountID)
+        {
+            try
+            {
+                return Ok(accRepo.GetAccountsById(AccountID));
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
     }
 }

@@ -18,11 +18,12 @@ namespace Repository
 
         private readonly AccountDAO _context;
 
-        public List<Account> GetAccounts() => AccountDAO.GetAccounts();
-        public Account GetAccountsById(string id) => AccountDAO.GetAccountsById(id);
-        public Account GetAccountByEmailAndPassword(string email, string password) => AccountDAO.GetAccountByEmailAndPassword(email, password);
+        public List<Account> GetAccounts() => _context.GetAccounts();
+        public Account GetAccountsById(Guid id) => _context.GetAccountsById(id);
+        public Account GetAccountByEmailAndPassword(string email, string password) => _context.GetAccountByEmailAndPassword(email, password);
         public Task<Account> AddAccount(SignUpData account) => _context.AddAccount(account);
-        public void UpdateAccount(Account account) => AccountDAO.UpdateAccount(account);
-        public void DeleteAccount(Account account) => AccountDAO.DeleteAccount(account);
+        public Account UpdateAccount(Account account) => _context.UpdateAccount(account);
+        public bool DeleteAccount(Account account) => _context.DeleteAccount(account);
+
     }
 }

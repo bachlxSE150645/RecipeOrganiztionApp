@@ -17,6 +17,11 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IRecipeDetailRepository, RecipeDetailRepository>();
 builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
+builder.Services.AddScoped<IMealRepository, MealRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<IWishListItemRepository, WishListItemRepository>();
+builder.Services.AddScoped<IWishListRepository, WishListRepository>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 

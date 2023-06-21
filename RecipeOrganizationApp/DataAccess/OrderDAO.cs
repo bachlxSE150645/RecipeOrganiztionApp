@@ -4,16 +4,34 @@ namespace DataAccess
 {
     public class OrderDAO
     {
+        private static OrderDAO instance;
+        private readonly AppDBContext _context;
+
+        public OrderDAO(AppDBContext context)
+        {
+            this._context = context;
+        }
+
+        public static OrderDAO GetInstance(AppDBContext dbContext)
+        {
+
+            if (instance == null)
+            {
+                instance = new OrderDAO(dbContext);
+            }
+
+            return instance;
+        }
+
         //Get All Orders
-        public static List<Order> GetOrders()
+        public  List<Order> GetOrders()
         {
             var listOrders = new List<Order>();
             try
             {
-                using(var context = new AppDBContext())
-                {
-                    listOrders = context.Orders.ToList();
-                }
+                
+                    listOrders = _context.Orders.ToList();
+                
             } catch(Exception ex)
             {
                 throw new Exception();
@@ -21,15 +39,14 @@ namespace DataAccess
             return listOrders;
         }
         //Get Order matches OrderID
-        public static Order GetOrdersById(string id)
+        public  Order GetOrdersById(string id)
         {
             var order = new Order();
             try
             {
-                using (var context = new AppDBContext())
-                {
-                    order = context.Orders.Where(x => x.OrderID.Equals(id)).SingleOrDefault();
-                }
+                
+                    order = _context.Orders.Where(x => x.OrderID.Equals(id)).SingleOrDefault();
+                
             }
             catch (Exception ex)
             {
@@ -38,12 +55,11 @@ namespace DataAccess
             return order;
         }
         //Post new Order
-        public static void AddOrder(Order order)
+        public void AddOrder(Order order)
         {
             try
             {
-                using(var context = new AppDBContext())
-                {
+                
                     var orderAdd = new Order
                     {
                         MealID = order.MealID,
@@ -54,48 +70,46 @@ namespace DataAccess
                         Status = order.Status,
                         Detail = order.Detail
                     };
-                    context.Orders.Add(orderAdd);
-                    context.SaveChanges();
-                }
+                    _context.Orders.Add(orderAdd);
+                    _context.SaveChanges();
+                
             } catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
         //Put existing Order
-        public static void UpdateOrder(Order order)
+        public void UpdateOrder(Order order)
         {
             try
             {
-                using (var context = new AppDBContext())
-                {
-                    var orderCheck = context.Orders.SingleOrDefault(x => x.OrderID == order.OrderID);
+                
+                    var orderCheck = _context.Orders.SingleOrDefault(x => x.OrderID == order.OrderID);
                     if (orderCheck != null)
                     {
-                        context.Entry<Order>(order).State =
+                        _context.Entry<Order>(order).State =
                             Microsoft.EntityFrameworkCore.EntityState.Modified;
-                        context.SaveChanges();
+                        _context.SaveChanges();
                     }
-                }
+                
             } catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
         //Delete existing Order
-        public static void DeleteOrder(Order order)
+        public  void DeleteOrder(Order order)
         {
             try
             {
-                using (var context = new AppDBContext())
-                {
-                    var orderCheck = context.Orders.SingleOrDefault(x => x.OrderID.Equals(order.OrderID));
+                
+                    var orderCheck = _context.Orders.SingleOrDefault(x => x.OrderID.Equals(order.OrderID));
                     if(orderCheck != null)
                     {
-                        context.Orders.Remove(orderCheck);
-                        context.SaveChanges();
+                        _context.Orders.Remove(orderCheck);
+                        _context.SaveChanges();
                     }
-                }
+                
             } catch (Exception ex)
             {
                 throw new Exception(ex.Message);

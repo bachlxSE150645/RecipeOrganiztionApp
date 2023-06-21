@@ -3,16 +3,33 @@ namespace DataAccess
 {
     public class WishListDAO
     {
+        private static WishListDAO instance;
+        private readonly AppDBContext _context;
+
+        public WishListDAO(AppDBContext context)
+        {
+            this._context = context;
+        }
+
+        public static WishListDAO GetInstance(AppDBContext dbContext)
+        {
+
+            if (instance == null)
+            {
+                instance = new WishListDAO(dbContext);
+            }
+
+            return instance;
+        }
         //Get all WishLists
-        public static List<WishList> GetRoles()
+        public List<WishList> GetRoles()
         {
             var listWishList = new List<WishList>();
             try
             {
-                using(var context = new AppDBContext())
-                {
-                    listWishList = context.WishLists.ToList();
-                }
+                
+                    listWishList = _context.WishLists.ToList();
+                
             } catch(Exception ex)
             {
                 throw new Exception(ex.Message);
@@ -20,15 +37,14 @@ namespace DataAccess
             return listWishList;
         }
         //Get wish list by WishListID
-        public static WishList GetWishListById(string id)
+        public WishList GetWishListById(string id)
         {
             var wishList = new WishList();
             try
             {
-                using(var context = new AppDBContext())
-                {
-                    wishList = context.WishLists.SingleOrDefault(x => x.WishListID.ToString() == id);
-                }
+                
+                    wishList = _context.WishLists.SingleOrDefault(x => x.WishListID.ToString() == id);
+                
             } catch(Exception ex)
             {
                 throw new Exception(ex.Message);
@@ -36,53 +52,52 @@ namespace DataAccess
             return wishList;
         }
         //Post new Wish List
-        public static void AddWishList(WishList wishlist)
+        public void AddWishList(WishList wishlist)
         {
             try
             {
-                using(var context = new AppDBContext()) {
+                
                     var wishListAdd = new WishList
                     {
                         AccountID = wishlist.AccountID,
                     };
-                    context.WishLists.Add(wishListAdd);
-                    context.SaveChanges();
-                }
+                    _context.WishLists.Add(wishListAdd);
+                    _context.SaveChanges();
+                
             } catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
         //Put existing Wish List by Wish List ID
-        public static void UpdateWishList(WishList wishList)
+        public void UpdateWishList(WishList wishList)
         {
             try
             {
-                using(var context = new AppDBContext())
-                {
-                    if(context.WishLists.SingleOrDefault(x => x.WishListID == wishList.WishListID) != null)
+                
+                    if(_context.WishLists.SingleOrDefault(x => x.WishListID == wishList.WishListID) != null)
                     {
-                        context.Entry<WishList>(wishList).State =
+                        _context.Entry<WishList>(wishList).State =
                            Microsoft.EntityFrameworkCore.EntityState.Modified;
-                        context.SaveChanges();
+                        _context.SaveChanges();
                     }
-                }
+                
             }catch(Exception ex) {
                 throw new Exception(ex.Message);
             }
         }
         //Delete existing wish list
-        public static void DeleteWishList(WishList wishList)
+        public void DeleteWishList(WishList wishList)
         {
             try
             {
-                using(var context = new AppDBContext()) {
-                    var wishListCheck = context.WishLists.SingleOrDefault(x => x.WishListID == wishList.WishListID);
+                
+                    var wishListCheck = _context.WishLists.SingleOrDefault(x => x.WishListID == wishList.WishListID);
                     if (wishListCheck != null)
                     {
-                        context.WishLists.Remove(wishListCheck);
+                        _context.WishLists.Remove(wishListCheck);
                     }
-                }
+                
             }catch(Exception ex)
             {
                 throw new Exception(ex.Message);
