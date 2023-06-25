@@ -13,15 +13,15 @@ namespace Repository
     {
         public IngredientRepository(AppDBContext dbContext)
         {
-            _context = IngredientDAO.GetInstance(dbContext);
+            dao = new IngredientDAO(dbContext);
         }
 
-        private readonly IngredientDAO _context;
+        private readonly IngredientDAO dao;
 
-        public List<Ingredient> GetIngredients() => _context.GetIngredients();
-        public Ingredient GetIngredientsById(Guid id) => _context.GetIngredientsById(id);
-        public Task<Ingredient> AddIngredient(string ingredientName) => _context.AddIngredient(ingredientName);
-        public void UpdateIngredient(Ingredient Ingredient) => _context.UpdateIngredient(Ingredient);
-        public void DeleteIngredient(Ingredient Ingredient) => _context.DeleteIngredient(Ingredient);
+        public List<Ingredient> GetIngredients() => dao.GetIngredients();
+        public Ingredient GetIngredientsById(Guid id) => dao.GetIngredientsById(id);
+        public Task<Ingredient> AddIngredient(string ingredientName) => dao.AddIngredient(ingredientName);
+        public void UpdateIngredient(Ingredient Ingredient) => dao.UpdateIngredient(Ingredient);
+        public void DeleteIngredient(Ingredient Ingredient) => dao.DeleteIngredient(Ingredient);
     }
 }

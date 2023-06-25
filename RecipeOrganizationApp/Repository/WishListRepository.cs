@@ -13,12 +13,11 @@ namespace Repository
     {
         public WishListRepository(AppDBContext dbContext)
         {
-            _context = WishListDAO.GetInstance(dbContext);
+            _context = new WishListDAO(dbContext);
         }
 
         private readonly WishListDAO _context;
 
-        public List<WishList> GetRoles() => _context.GetRoles();
         public WishList GetWishListById(string id) => _context.GetWishListById(id);
         public void AddWishList(WishList wishlist) => _context.AddWishList(wishlist);
         public void UpdateWishList(WishList wishList) => _context.UpdateWishList(wishList);

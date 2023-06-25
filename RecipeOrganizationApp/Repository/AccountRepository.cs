@@ -13,17 +13,17 @@ namespace Repository
     {
         public AccountRepository(AppDBContext dbContext)
         {
-            _context = AccountDAO.GetInstance(dbContext);
+            dao = new AccountDAO(dbContext);
         }
 
-        private readonly AccountDAO _context;
+        private readonly AccountDAO dao;
 
-        public List<Account> GetAccounts() => _context.GetAccounts();
-        public Account GetAccountsById(Guid id) => _context.GetAccountsById(id);
-        public Account GetAccountByEmailAndPassword(string email, string password) => _context.GetAccountByEmailAndPassword(email, password);
-        public Task<Account> AddAccount(SignUpData account) => _context.AddAccount(account);
-        public Account UpdateAccount(Account account) => _context.UpdateAccount(account);
-        public bool DeleteAccount(Account account) => _context.DeleteAccount(account);
+        public List<Account> GetAccounts() => dao.GetAccounts();
+        public Account GetAccountsById(Guid id) => dao.GetAccountsById(id);
+        public Account GetAccountByEmailAndPassword(string email, string password) => dao.GetAccountByEmailAndPassword(email, password);
+        public Task<Account> AddAccount(SignUpData account) => dao.AddAccount(account);
+        public Account UpdateAccount(Account account) => dao.UpdateAccount(account);
+        public bool DeleteAccount(Account account) => dao.DeleteAccount(account);
 
     }
 }

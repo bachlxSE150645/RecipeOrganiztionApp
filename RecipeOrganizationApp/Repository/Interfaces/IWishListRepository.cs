@@ -9,7 +9,6 @@ namespace Repository.Interfaces
 {
     public interface IWishListRepository
     {
-        List<WishList> GetRoles();
         WishList GetWishListById(string id);
         void AddWishList(WishList wishlist);
         void UpdateWishList(WishList wishList);
