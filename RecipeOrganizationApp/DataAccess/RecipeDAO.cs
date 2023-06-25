@@ -5,60 +5,42 @@ namespace DataAccess
 {
     public class RecipeDAO
     {
-        private static RecipeDAO instance;
         private readonly AppDBContext _context;
-        //private readonly IMapper _mapper;
 
-        public RecipeDAO(AppDBContext context)
+        public RecipeDAO (AppDBContext dbContext)
         {
-            this._context = context;
-        }
-
-        public static RecipeDAO GetInstance(AppDBContext dbContext)
-        {
-
-            if (instance == null)
-            {
-                instance = new RecipeDAO(dbContext);
-            }
-
-            return instance;
+            this._context = dbContext;
         }
 
 
         //Get All Recipes
-        public static List<Recipe> GetRecipes()
+        public List<Recipe> GetRecipes()
         {
             var listRecipes = new List<Recipe>();
             try
             {
-                using(var context = new AppDBContext())
-                {
-                    listRecipes = context.Recipes.ToList();
-                }
+                listRecipes = this._context.Recipes.ToList();
             } catch(Exception ex)
             {
-                throw new Exception();
+                throw ex;
             }
             return listRecipes;
         }
         //Get Recipe matches RecipeID
-        public static Recipe GetRecipesById(string id)
+        public  Recipe GetRecipesById(string id)
         {
             var recipe = new Recipe();
             try
             {
-                using (var context = new AppDBContext())
-                {
-                    recipe = context.Recipes.Where(x => x.RecipeID.Equals(id)).SingleOrDefault();
-                }
+                recipe = this._context.Recipes.Where(x => x.RecipeID.Equals(id)).SingleOrDefault();
             }
             catch (Exception ex)
             {
-                throw new Exception();
+                throw new Exception(ex.Message);
             }
             return recipe;
         }
+
         //Post new Recipe
         public async Task<Recipe> AddRecipe(RecipeData recipe)
         {
@@ -74,51 +56,47 @@ namespace DataAccess
                     Status = "waitting",
                     CreateDate = DateTime.Now
                 };
-                _context.Recipes.Add(recipeAdd);
-                _context.SaveChanges();
+                this._context.Recipes.Add(recipeAdd);
+                await this._context.SaveChangesAsync();
                 return recipeAdd;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        
+
         //Put existing Recipe
-        public static void UpdateRecipe(Recipe recipe)
+        public void UpdateRecipe(Recipe recipe)
         {
             try
             {
-                using (var context = new AppDBContext())
+                var recipeCheck = this._context.Recipes.SingleOrDefault(x => x.RecipeID == recipe.RecipeID);
+                if (recipeCheck != null)
                 {
-                    var recipeCheck = context.Recipes.SingleOrDefault(x => x.RecipeID == recipe.RecipeID);
-                    if (recipeCheck != null)
-                    {
-                        context.Entry<Recipe>(recipe).State =
-                            Microsoft.EntityFrameworkCore.EntityState.Modified;
-                        context.SaveChanges();
-                    }
+                    this._context.Entry<Recipe>(recipe).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    this._context.SaveChanges();
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
+
         //Delete existing Recipe
-        public static void DeleteRecipe(Recipe recipe)
+        public void DeleteRecipe(Recipe recipe)
         {
             try
             {
-                using (var context = new AppDBContext())
+                var recipeCheck = this._context.Recipes.SingleOrDefault(x => x.RecipeID.Equals(recipe.RecipeID));
+                if (recipeCheck != null)
                 {
-                    var recipeCheck = context.Recipes.SingleOrDefault(x => x.RecipeID.Equals(recipe.RecipeID));
-                    if(recipeCheck != null)
-                    {
-                        context.Recipes.Remove(recipeCheck);
-                        context.SaveChanges();
-                    }
+                    this._context.Recipes.Remove(recipeCheck);
+                    this._context.SaveChanges();
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

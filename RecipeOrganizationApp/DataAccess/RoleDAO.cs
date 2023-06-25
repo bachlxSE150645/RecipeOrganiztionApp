@@ -1,62 +1,48 @@
-﻿using BusinessObjects;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using BusinessObjects;
+using BusinessObjects.MapData;
 
 namespace DataAccess
 {
     public class RoleDAO
     {
-        private static RoleDAO instance;
         private readonly AppDBContext _context;
 
         public RoleDAO(AppDBContext context)
         {
-            this._context = context;
-        }
-
-        public static RoleDAO GetInstance(AppDBContext dbContext)
-        {
-
-            if (instance == null)
-            {
-                instance = new RoleDAO(dbContext);
-            }
-
-            return instance;
+            _context = context;
         }
 
         //Get all Roles
-        public static List<Role> GetRoles()
+        public List<Role> GetRoles()
         {
-            var listRole = new List<Role>();
             try
             {
-                using(var context = new AppDBContext())
-                {
-                    listRole = context.Roles.ToList();
-                }
-            } catch(Exception ex)
+                return _context.Roles.ToList();
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return listRole;
         }
+
         //Get role by RoleID
-        public static Role GetRoleById(string id)
+        public Role GetRoleById(string id)
         {
-            var role = new Role();
             try
             {
-                using(var context = new AppDBContext())
-                {
-                    role = context.Roles.SingleOrDefault(x => x.RoleID.ToString() == id);
-                }
-            } catch(Exception ex)
+                return _context.Roles.SingleOrDefault(x => x.RoleID == Guid.Parse(id));
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return role;
         }
+
         //Post new Role
-        public Role AddRoleAsync(string roleName)
+        public Role AddRole(string roleName)
         {
             try
             {
@@ -65,47 +51,47 @@ namespace DataAccess
                     RoleID = Guid.NewGuid(),
                     RoleName = roleName
                 };
-                    _context.Roles.Add(newRole);
-                    _context.SaveChanges();
-                    return newRole;
-                
+                _context.Roles.Add(newRole);
+                _context.SaveChanges();
+                return newRole;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
+
         //Put existing role by Role ID
-        public static void UpdateRole(Role role)
+        public void UpdateRole(Role role)
         {
             try
             {
-                using(var context = new AppDBContext())
+                var roleCheck = _context.Roles.SingleOrDefault(x => x.RoleID == role.RoleID);
+                if (roleCheck != null)
                 {
-                    if(context.Roles.SingleOrDefault(x=>x.RoleID == role.RoleID) != null)
-                    {
-                        context.Entry<Role>(role).State =
-                           Microsoft.EntityFrameworkCore.EntityState.Modified;
-                        context.SaveChanges();
-                    }
+                    _context.Entry(roleCheck).CurrentValues.SetValues(role);
+                    _context.SaveChanges();
                 }
-            }catch(Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 throw new Exception(ex.Message);
             }
         }
+
         //Delete existing role
-        public static void DeleteRole(Role role)
+        public void DeleteRole(Role role)
         {
             try
             {
-                using(var context = new AppDBContext()) {
-                    var rolecheck = context.Roles.SingleOrDefault(x => x.RoleID == role.RoleID);
-                    if (rolecheck != null)
-                    {
-                        context.Roles.Remove(rolecheck);
-                    }
+                var roleCheck = _context.Roles.SingleOrDefault(x => x.RoleID == role.RoleID);
+                if (roleCheck != null)
+                {
+                    _context.Roles.Remove(roleCheck);
+                    _context.SaveChanges();
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

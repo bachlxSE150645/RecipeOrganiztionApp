@@ -1,97 +1,71 @@
-﻿using BusinessObjects;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using BusinessObjects;
 using BusinessObjects.MapData;
-using System.Linq.Expressions;
 
 namespace DataAccess
 {
     public class RecipeDetailDAO
     {
-        private static RecipeDetailDAO instance;
         private readonly AppDBContext _context;
-        //private readonly IMapper _mapper;
 
         public RecipeDetailDAO(AppDBContext context)
         {
-            this._context = context;
+            _context = context;
         }
-
-        public static RecipeDetailDAO GetInstance(AppDBContext dbContext)
-        {
-
-            if (instance == null)
-            {
-                instance = new RecipeDetailDAO(dbContext);
-            }
-
-            return instance;
-        }
-
 
         //Get All Recipe Details
-        public static List<RecipeDetail> GetRecipeDetails()
+        public List<RecipeDetail> GetRecipeDetails()
         {
-            var list = new List<RecipeDetail>();
             try
             {
-                using (var context = new AppDBContext())
-                {
-                    list = context.RecipeDetails.ToList();
-                }
-            } catch(Exception ex) {
-                throw new Exception(ex.Message);
-            }
-            return list;
-        }
-
-        //Get Recipe Details by Recipe ID
-        public static List<RecipeDetail> GetRecipeDetailsByRecipeId(string recipeId)
-        {
-            var listRecipeDetail = new List<RecipeDetail>();
-            try
-            {
-                using(var context = new AppDBContext())
-                {
-                    listRecipeDetail = context.RecipeDetails.Where(x=> x.RecipeID.ToString() == recipeId).ToList();
-                }
-            } catch(Exception ex) {
-                throw new Exception(ex.Message);
-            }
-            return listRecipeDetail;
-        }
-
-        //Get Recipe Details by Ingredient ID
-        public static List<RecipeDetail> GetRecipeDetailsByIngredientId(string ingredientId)
-        {
-            var listRecipeDetail = new List<RecipeDetail>();
-            try
-            {
-                using (var context = new AppDBContext())
-                {
-                    listRecipeDetail = context.RecipeDetails.Where(x => x.IngredientID.ToString() == ingredientId).ToList();
-                }
+                return _context.RecipeDetails.ToList();
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return listRecipeDetail;
         }
 
-        //Get Recipe Detail by Recipe ID and Ingredient ID
-        public static RecipeDetail GetRecipeDetailsByRecIdAndIngId(string recId, string IngId)
+        //Get Recipe Details by Recipe ID
+        public List<RecipeDetail> GetRecipeDetailsByRecipeId(string recipeId)
         {
-            var recipeDetail = new RecipeDetail();
             try
             {
-                using(var context = new AppDBContext())
-                {
-                    recipeDetail = context.RecipeDetails.SingleOrDefault(x => x.RecipeID.ToString() == recId && x.IngredientID.ToString() == IngId);
-                }
-            } catch(Exception ex)
+                return _context.RecipeDetails.Where(x => x.RecipeID == Guid.Parse(recipeId)).ToList();
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return recipeDetail;
+        }
+
+        //Get Recipe Details by Ingredient ID
+        public List<RecipeDetail> GetRecipeDetailsByIngredientId(string ingredientId)
+        {
+            try
+            {
+                return _context.RecipeDetails.Where(x => x.IngredientID == Guid.Parse(ingredientId)).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        //Get Recipe Detail by Recipe ID and Ingredient ID
+        public RecipeDetail GetRecipeDetailsByRecIdAndIngId(string recId, string IngId)
+        {
+            try
+            {
+                return _context.RecipeDetails.SingleOrDefault(x => x.RecipeID == Guid.Parse(recId) && x.IngredientID == Guid.Parse(IngId));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         //Post new Recipe Detail
@@ -107,28 +81,25 @@ namespace DataAccess
                     Unit = inf.Unit
                 };
                 _context.RecipeDetails.Add(recipeDetail);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return recipeDetail;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
 
         //Put existing Recipe by Recipe ID and Ingredient ID
-        public static void UpdateRecipeDetail(RecipeDetail recipeDetail)
+        public void UpdateRecipeDetail(RecipeDetail recipeDetail)
         {
             try
             {
-                using (var context = new AppDBContext())
+                var recipeDetailCheck = _context.RecipeDetails.SingleOrDefault(x => x.RecipeID == recipeDetail.RecipeID && x.IngredientID == recipeDetail.IngredientID);
+                if (recipeDetailCheck != null)
                 {
-                    var recipeDetailCheck = context.RecipeDetails.SingleOrDefault(x => x.RecipeID == recipeDetail.RecipeID && x.IngredientID == recipeDetail.IngredientID);
-                    if (recipeDetailCheck != null)
-                    {
-                        context.Entry<RecipeDetail>(recipeDetail).State =
-                            Microsoft.EntityFrameworkCore.EntityState.Modified;
-                        context.SaveChanges();
-                    }
+                    _context.Entry(recipeDetailCheck).CurrentValues.SetValues(recipeDetail);
+                    _context.SaveChanges();
                 }
             }
             catch (Exception ex)
@@ -136,20 +107,17 @@ namespace DataAccess
                 throw new Exception(ex.Message);
             }
         }
-        
+
         //Delete existing Recipe Detail
-        public static void DeleteRecipeDetail(RecipeDetail recipeDetail)
+        public void DeleteRecipeDetail(RecipeDetail recipeDetail)
         {
             try
             {
-                using (var context = new AppDBContext())
+                var recipeDetailCheck = _context.RecipeDetails.SingleOrDefault(x => x.RecipeID == recipeDetail.RecipeID && x.IngredientID == recipeDetail.IngredientID);
+                if (recipeDetailCheck != null)
                 {
-                    var recipeDetailCheck = context.RecipeDetails.SingleOrDefault(x => x.RecipeID.Equals(recipeDetail.RecipeID) && x.IngredientID.Equals(recipeDetail.IngredientID));
-                    if (recipeDetailCheck != null)
-                    {
-                        context.RecipeDetails.Remove(recipeDetailCheck);
-                        context.SaveChanges();
-                    }
+                    _context.RecipeDetails.Remove(recipeDetailCheck);
+                    _context.SaveChanges();
                 }
             }
             catch (Exception ex)

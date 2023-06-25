@@ -1,76 +1,55 @@
-﻿using BusinessObjects;
-using System.Linq.Expressions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using BusinessObjects;
+using BusinessObjects.MapData;
 
 namespace DataAccess
 {
     public class ReviewDAO
     {
-        private static ReviewDAO instance;
         private readonly AppDBContext _context;
 
         public ReviewDAO(AppDBContext context)
         {
-            this._context = context;
-        }
-
-        public static ReviewDAO GetInstance(AppDBContext dbContext)
-        {
-
-            if (instance == null)
-            {
-                instance = new ReviewDAO(dbContext);
-            }
-
-            return instance;
+            _context = context;
         }
 
         //Get All Reviews
-        public List<Review> GetRecipeDetails()
+        public List<Review> GetReviews()
         {
-            var list = new List<Review>();
             try
             {
-                
-                    list = _context.Reviews.ToList();
-                
-            } catch(Exception ex) {
+                return _context.Reviews.ToList();
+            }
+            catch (Exception ex)
+            {
                 throw new Exception(ex.Message);
             }
-            return list;
         }
 
         //Get Reviews by Review ID
-        public List<Review> GetRecipeDetailsByRecipeId(string reviewId)
+        public List<Review> GetReviewsByReviewId(string reviewId)
         {
-            var listReview = new List<Review>();
             try
             {
-                
-                    listReview = _context.Reviews.Where(x => x.ReviewID.ToString() == reviewId).ToList();
-                
-            } catch(Exception ex) {
+                return _context.Reviews.Where(x => x.ReviewID == Guid.Parse(reviewId)).ToList();
+            }
+            catch (Exception ex)
+            {
                 throw new Exception(ex.Message);
             }
-            return listReview;
         }
 
         //Post new Review
-        public  void AddReview(Review review)
+        public void AddReview(Review review)
         {
             try
             {
-                
-                    var reviewAdd = new Review
-                    {
-                        AccountID = review.AccountID,
-                        RecipeID = review.RecipeID,
-                        ReviewContent = review.ReviewContent,
-                        Rating = review.Rating,
-                    };
-                    _context.Reviews.Add(review);
-                    _context.SaveChanges();
-                
-            }catch(Exception ex)
+                _context.Reviews.Add(review);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -81,35 +60,30 @@ namespace DataAccess
         {
             try
             {
-                
-                    var reviewCheck = _context.Reviews.SingleOrDefault(x => x.ReviewID == review.ReviewID);
-                    if (reviewCheck != null)
-                    {
-                            _context.Entry<Review>(review).State =
-                            Microsoft.EntityFrameworkCore.EntityState.Modified;
-                        _context.SaveChanges();
-                    }
-                
+                var reviewCheck = _context.Reviews.SingleOrDefault(x => x.ReviewID == review.ReviewID);
+                if (reviewCheck != null)
+                {
+                    _context.Entry(reviewCheck).CurrentValues.SetValues(review);
+                    _context.SaveChanges();
+                }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        
+
         //Delete existing Review
         public void DeleteReview(Review review)
         {
             try
             {
-                
-                    var reviewCheck = _context.Reviews.SingleOrDefault(x => x.ReviewID.Equals(review.RecipeID));
-                    if (reviewCheck != null)
-                    {
-                        _context.Reviews.Remove(reviewCheck);
-                        _context.SaveChanges();
-                    }
-                
+                var reviewCheck = _context.Reviews.SingleOrDefault(x => x.ReviewID == review.ReviewID);
+                if (reviewCheck != null)
+                {
+                    _context.Reviews.Remove(reviewCheck);
+                    _context.SaveChanges();
+                }
             }
             catch (Exception ex)
             {
