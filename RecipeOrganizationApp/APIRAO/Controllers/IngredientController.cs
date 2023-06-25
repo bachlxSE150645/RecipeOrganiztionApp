@@ -12,9 +12,8 @@ namespace APIRAO.Controllers
     {
         private readonly IIngredientRepository ingRepo;
 
-        public IngredientController()
+        public IngredientController(AppDBContext dbContext)
         {
-            AppDBContext dbContext = new();
             ingRepo = new IngredientRepository(dbContext);
         }
 

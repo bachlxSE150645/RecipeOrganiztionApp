@@ -13,9 +13,8 @@ namespace APIRAO.Controllers
     {
         private readonly IRecipeDetailRepository recipeDetailRepo;
 
-        public RecipeDetailController()
+        public RecipeDetailController(AppDBContext dbContext)
         {
-            AppDBContext dbContext = new();
             recipeDetailRepo = new RecipeDetailRepository(dbContext);
         }
 
