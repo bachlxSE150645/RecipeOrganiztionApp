@@ -13,15 +13,13 @@ namespace Repository
     {
         public ReviewRepository(AppDBContext dbContext)
         {
-            _context = ReviewDAO.GetInstance(dbContext);
+            dao = new ReviewDAO(dbContext);
         }
 
-        private readonly ReviewDAO _context;
+        private readonly ReviewDAO dao;
 
-        public List<Review> GetRecipeDetails() => _context.GetRecipeDetails();
-        public List<Review> GetRecipeDetailsByRecipeId(string reviewId) => _context.GetRecipeDetailsByRecipeId(reviewId);
-        public void AddReview(Review review) => _context.AddReview(review);
-        public void UpdateReview(Review review) => _context.UpdateReview(review);
-        public void DeleteReview(Review review) => _context.DeleteReview(review);
+        public void AddReview(Review review) => dao.AddReview(review);
+        public void UpdateReview(Review review) => dao.UpdateReview(review);
+        public void DeleteReview(Review review) => dao.DeleteReview(review);
     }
 }

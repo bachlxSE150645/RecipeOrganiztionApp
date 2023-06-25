@@ -13,15 +13,15 @@ namespace Repository
     {
         public MealRepository(AppDBContext dbContext)
         {
-            _context = MealDAO.GetInstance(dbContext);
+            dao = new MealDAO(dbContext);
         }
 
-        private readonly MealDAO _context;
+        private readonly MealDAO dao;
 
-        public List<Meal> GetMeals() => _context.GetMeals();
-        public Meal GetMealsById(string id) => _context.GetMealsById(id);
-        public void AddMeal(Meal meal) => _context.AddMeal(meal);
-        public void UpdateMeal(Meal meal) => _context.UpdateMeal(meal);
-        public void DeleteMeal(Meal meal) => _context.DeleteMeal(meal);
+        public List<Meal> GetMeals() => dao.GetMeals();
+        public Meal GetMealsById(string id) => dao.GetMealsById(id);
+        public void AddMeal(Meal meal) => dao.AddMeal(meal);
+        public void UpdateMeal(Meal meal) => dao.UpdateMeal(meal);
+        public void DeleteMeal(Meal meal) => dao.DeleteMeal(meal);
     }
 }

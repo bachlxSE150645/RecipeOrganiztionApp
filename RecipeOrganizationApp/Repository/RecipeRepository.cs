@@ -14,15 +14,15 @@ namespace Repository
     {
         public RecipeRepository(AppDBContext dbContext)
         {
-            _context = RecipeDAO.GetInstance(dbContext);
+            dao = new RecipeDAO(dbContext);
         }
 
-        private readonly RecipeDAO _context;
+        private readonly RecipeDAO dao;
 
-        public List<Recipe> GetRecipes() => RecipeDAO.GetRecipes();
-        public Recipe GetRecipesById(string id) => RecipeDAO.GetRecipesById(id);
-        public Task<Recipe> AddRecipe(RecipeData recipe) => _context.AddRecipe(recipe);
-        public void UpdateRecipe(Recipe recipe) => RecipeDAO.UpdateRecipe(recipe);
-        public void DeleteRecipe(Recipe recipe) => RecipeDAO.DeleteRecipe(recipe);
+        public List<Recipe> GetRecipes() => dao.GetRecipes();
+        public Recipe GetRecipesById(string id) => dao.GetRecipesById(id);
+        public Task<Recipe> AddRecipe(RecipeData recipe) => dao.AddRecipe(recipe);
+        public void UpdateRecipe(Recipe recipe) => dao.UpdateRecipe(recipe);
+        public void DeleteRecipe(Recipe recipe) => dao.DeleteRecipe(recipe);
     }
 }

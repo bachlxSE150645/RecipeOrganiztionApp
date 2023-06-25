@@ -14,15 +14,15 @@ namespace Repository
 
         public RoleRepository(AppDBContext dbContext)
         {
-            _context = RoleDAO.GetInstance(dbContext);
+            _context = new RoleDAO(dbContext);
         }
 
         private readonly RoleDAO _context;
 
-        public List<Role> GetRoles() => RoleDAO.GetRoles();
-        public Role GetRoleById(string id) => RoleDAO.GetRoleById(id);
-        public Role AddRole(string roleName) => _context.AddRoleAsync(roleName);
-        public void UpdateRole(Role role) => RoleDAO.UpdateRole(role);
-        public void DeleteRole(Role role) => RoleDAO.DeleteRole(role);
+        public List<Role> GetRoles() => _context.GetRoles();
+        public Role GetRoleById(string id) => _context.GetRoleById(id);
+        public Role AddRole(string roleName) => _context.AddRole(roleName);
+        public void UpdateRole(Role role) => _context.UpdateRole(role);
+        public void DeleteRole(Role role) => _context.DeleteRole(role);
     }
 }

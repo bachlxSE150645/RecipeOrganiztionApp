@@ -13,15 +13,15 @@ namespace Repository
     {
         public OrderRepository(AppDBContext dbContext)
         {
-            _context = OrderDAO.GetInstance(dbContext);
+            dao = new OrderDAO(dbContext);
         }
 
-        private readonly OrderDAO _context;
+        private readonly OrderDAO dao;
 
-        public List<Order> GetOrders() => _context.GetOrders();
-        public Order GetOrdersById(string id) => _context.GetOrdersById(id);
-        public void AddOrder(Order order) => _context.AddOrder(order);
-        public void UpdateOrder(Order order) => _context.UpdateOrder(order);
-        public void DeleteOrder(Order order) => _context.DeleteOrder(order);
+        public List<Order> GetOrders() => dao.GetOrders();
+        public Order GetOrdersById(string id) => dao.GetOrdersById(id);
+        public void AddOrder(Order order) => dao.AddOrder(order);
+        public void UpdateOrder(Order order) => dao.UpdateOrder(order);
+        public void DeleteOrder(Order order) => dao.DeleteOrder(order);
     }
 }

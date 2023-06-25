@@ -13,16 +13,16 @@ namespace Repository
     {
         public WishListItemRepository(AppDBContext dbContext)
         {
-            _context = WishListItemDAO.GetInstance(dbContext);
+            dao = new WishListItemDAO(dbContext);
         }
 
-        private readonly WishListItemDAO _context;
+        private readonly WishListItemDAO dao;
 
-        public List<WishListItem> GetWishListItems() => _context.GetWishListItems();
-        public List<WishListItem> GetWishListItemsByWishListId(string wishListId) => _context.GetWishListItemsByWishListId(wishListId);
-        public List<WishListItem> GetWishListItemsByRecipeId(string recipeId) => _context.GetWishListItemsByRecipeId(recipeId);
-        public WishListItem GetWishListItemsByRecIdAndWSLId(string recId, string WSLId) => _context.GetWishListItemsByRecIdAndWSLId(recId, WSLId);
-        public void AddWishListItem(WishListItem wishListItem) => _context.AddWishListItem(wishListItem);
-        public void DeleteWishListItem(WishListItem wishListItem) => _context.DeleteWishListItem(wishListItem);
+        public List<WishListItem> GetWishListItems() => dao.GetWishListItems();
+        public List<WishListItem> GetWishListItemsByWishListId(string wishListId) => dao.GetWishListItemsByWishListId(wishListId);
+        public List<WishListItem> GetWishListItemsByRecipeId(string recipeId) => dao.GetWishListItemsByRecipeId(recipeId);
+        public WishListItem GetWishListItemsByRecIdAndWSLId(string recId, string WSLId) => dao.GetWishListItemsByRecIdAndWSLId(recId, WSLId);
+        public void AddWishListItem(WishListItem wishListItem) => dao.AddWishListItem(wishListItem);
+        public void DeleteWishListItem(WishListItem wishListItem) => dao.DeleteWishListItem(wishListItem);
     }
 }

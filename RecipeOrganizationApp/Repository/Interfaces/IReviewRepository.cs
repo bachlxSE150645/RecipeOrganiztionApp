@@ -10,8 +10,6 @@ namespace Repository.Interfaces
 {
     public interface IReviewRepository
     {
-        List<Review> GetRecipeDetails();
-        List<Review> GetRecipeDetailsByRecipeId(string reviewId);
         void AddReview(Review review);
         void UpdateReview(Review review);
         void DeleteReview(Review review);
