@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20230615105945_RecipeOrganizerApp")]
-    partial class RecipeOrganizerApp
+    [Migration("20230626022448_Update-Database")]
+    partial class UpdateDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,17 +32,14 @@ namespace BusinessObjects.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
@@ -53,7 +50,6 @@ namespace BusinessObjects.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -71,7 +67,6 @@ namespace BusinessObjects.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("IngredientName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Status")
@@ -92,10 +87,9 @@ namespace BusinessObjects.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal?>("Price")
                         .HasColumnType("money");
 
                     b.Property<Guid>("RecipeID")
@@ -124,17 +118,16 @@ namespace BusinessObjects.Migrations
                     b.Property<Guid>("AccountID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateDate")
+                    b.Property<DateTime?>("CreateDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Detail")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("MealID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int?>("Quantity")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -142,7 +135,7 @@ namespace BusinessObjects.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<decimal>("TotalPrice")
+                    b.Property<decimal?>("TotalPrice")
                         .HasColumnType("money");
 
                     b.HasKey("OrderID");
@@ -163,19 +156,16 @@ namespace BusinessObjects.Migrations
                     b.Property<Guid>("AccountID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateDate")
+                    b.Property<DateTime?>("CreateDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RecipeImage")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RecipeName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
@@ -195,14 +185,13 @@ namespace BusinessObjects.Migrations
                     b.Property<Guid>("IngredientID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int?>("Quantity")
                         .HasColumnType("int");
 
                     b.Property<Guid>("RecipeID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Unit")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -222,14 +211,13 @@ namespace BusinessObjects.Migrations
                     b.Property<Guid>("AccountID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<float>("Rating")
+                    b.Property<float?>("Rating")
                         .HasColumnType("real");
 
                     b.Property<Guid>("RecipeID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ReviewContent")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ReviewID");
@@ -248,7 +236,6 @@ namespace BusinessObjects.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("RoleName")
-                        .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
