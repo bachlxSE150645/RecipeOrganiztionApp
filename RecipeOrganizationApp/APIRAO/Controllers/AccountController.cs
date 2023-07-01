@@ -14,9 +14,9 @@ namespace APIRAO.Controllers
     {
         private readonly IAccountRepository accRepo;
 
-        public AccountController(AppDBContext dbContext)
+        public AccountController(IAccountRepository _accountRepository)
         {
-            accRepo = new AccountRepository(dbContext);
+            this.accRepo = _accountRepository;
         }
 
 

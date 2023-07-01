@@ -13,9 +13,9 @@ namespace APIRAO.Controllers
     {
         private readonly IRoleRepository roleRepo;
 
-        public RoleController(AppDBContext dbContext)
+        public RoleController(IRoleRepository _roleRepository)
         {
-            roleRepo = new RoleRepository(dbContext);
+            this.roleRepo = _roleRepository;    
         }
 
         [HttpGet]
