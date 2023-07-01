@@ -21,7 +21,7 @@ namespace Repository
         private readonly RecipeDAO dao;
         private readonly RecipeDetailDAO detailDAO;
 
-        public async Task<List<Recipe>> GetRecipeByName(string name)
+        public List<Recipe> GetRecipeByName(string name)
         {
             List<Recipe> recipes = this.dao.GetRecipesByName(name);
 
@@ -30,7 +30,7 @@ namespace Repository
                 recipe.RecipeDetails = detailDAO.GetRecipeDetailsByRecipeId(recipe.RecipeID);
             }
 
-            return await Task.FromResult(recipes);
+            return recipes;
         }
 
         public Task<List<Recipe>> GetRecipes() => dao.GetRecipes();

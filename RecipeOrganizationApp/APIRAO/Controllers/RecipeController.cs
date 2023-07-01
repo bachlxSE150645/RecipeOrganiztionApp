@@ -14,23 +14,24 @@ namespace APIRAO.Controllers
     {
         private readonly IRecipeRepository recipeRepo;
 
-        public RecipeController(AppDBContext dbContext)
+        public RecipeController(IRecipeRepository _recipeRepository)
         {
-            recipeRepo = new RecipeRepository(dbContext);
+            this.recipeRepo = _recipeRepository;
         }
 
         [HttpGet]
-        public IActionResult GetRecipes(string recipeName = "")
+        public async Task<IActionResult> GetRecipes(string? recipeName = "")
         {
-            try
+            if (string.IsNullOrWhiteSpace(recipeName))
             {
-                var recipes = string.IsNullOrEmpty(recipeName) ? recipeRepo.GetRecipes() : recipeRepo.GetRecipeByName(recipeName);
-                return Ok(recipes);
+                return Ok(await recipeRepo.GetRecipes());
             }
-            catch (Exception ex)
+            else
             {
-                return BadRequest(ex.Message);
+                List<Recipe> recipes = recipeRepo.GetRecipeByName(recipeName);
+                return Ok(await Task.FromResult(recipes));
             }
+
         }
 
         [HttpGet("{RecipeId}")]
