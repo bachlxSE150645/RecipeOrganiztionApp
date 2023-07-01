@@ -1,30 +1,39 @@
-﻿using AutoMapper;
+﻿using APIRAO.Lib;
+using AutoMapper;
 using BusinessObjects;
+using BusinessObjects.DTO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
 namespace DataAccess
 {
-    public class AccountDAO
+    public class AccountDAO 
     {
         private readonly AppDBContext _context;
 
+        private  PaginatedList<AccountDTO> items;
+        private readonly int pageSize = 4;
         public AccountDAO(AppDBContext context)
         {
+
             this._context = context;
+
         }
 
         //Get All Accounts
-        public List<Account> GetAccounts()
+        public async Task<List<Account>> GetAccounts(string searchString, int? pageIndex)
         {
-            try
+           if(searchString != null)
             {
-                return _context.Accounts.ToList();
+                pageIndex = 1;
             }
-            catch (Exception ex)
+            IQueryable<Account> accountIQ = from a in _context.Accounts
+                                             select a;
+            if(!String.IsNullOrEmpty(searchString))
             {
-                throw new Exception(ex.Message);
+                accountIQ = accountIQ.Where(a=>a.UserName.Contains(searchString) && a.Email.Contains(searchString));
             }
+            return await PaginatedList<Account>.CreateAsync(accountIQ.AsNoTracking(),pageIndex ?? 1,pageSize);
         }
 
         //Get Account matches ID
