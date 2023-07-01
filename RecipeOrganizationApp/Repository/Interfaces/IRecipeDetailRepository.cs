@@ -11,7 +11,7 @@ namespace Repository.Interfaces
     public interface IRecipeDetailRepository
     {
         List<RecipeDetail> GetRecipeDetails();
-        List<RecipeDetail> GetRecipeDetailsByRecipeId(string recipeId);
+        List<RecipeDetail> GetRecipeDetailsByRecipeId(Guid recipeId);
         List<RecipeDetail> GetRecipeDetailsByIngredientId(string ingredientId);
         RecipeDetail GetRecipeDetailsByRecIdAndIngId(string recId, string IngId);
         Task<RecipeDetail> AddRecipeDetail(RecipeDetailData recipeDetail);

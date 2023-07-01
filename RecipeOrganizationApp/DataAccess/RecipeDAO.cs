@@ -15,12 +15,15 @@ namespace DataAccess
 
 
         //Get All Recipes
-        public List<Recipe> GetRecipes()
+        public async Task<List<Recipe>> GetRecipes()
         {
             var listRecipes = new List<Recipe>();
             try
             {
-                listRecipes = this._context.Recipes.Include(r => r.Account).ToList();
+                listRecipes = this._context.Recipes
+                    .Include(c => c.Account)
+                    .Include(c => c.Account.Role)
+                    .ToList();
             } catch(Exception ex)
             {
                 throw ex;
@@ -28,12 +31,33 @@ namespace DataAccess
             return listRecipes;
         }
         //Get Recipe matches RecipeID
-        public  Recipe GetRecipesById(string id)
+        public  Recipe GetRecipesById(Guid id)
         {
             var recipe = new Recipe();
             try
             {
-                recipe = this._context.Recipes.Where(x => x.RecipeID.Equals(id)).Include(r => r.Account).SingleOrDefault();
+                recipe = this._context.Recipes
+                    .Where(x => x.RecipeID.Equals(id))
+                    .Include(c => c.Account)
+                    .Include(c => c.Account.Role)
+                    .SingleOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return recipe;
+        }
+        //Get By Name
+        public Recipe GetRecipesByName(string name)
+        {
+            var recipe = new Recipe();
+            try
+            {
+                recipe = this._context.Recipes
+                    .Include(c => c.Account)
+                    .Include(c => c.Account.Role)
+                    .Where(x => x.RecipeName.Contains(name)).SingleOrDefault();
             }
             catch (Exception ex)
             {
@@ -55,7 +79,9 @@ namespace DataAccess
                     Description = recipe.Description,
                     AccountID = recipe.AccountID,
                     Status = "waitting",
-                    CreateDate = DateTime.Now
+                    CreateDate = DateTime.Now,
+                    Account = await _context.Accounts.FirstOrDefaultAsync(c => c.AccountID == recipe.AccountID)
+
                 };
                 this._context.Recipes.Add(recipeAdd);
                 await this._context.SaveChangesAsync();
@@ -68,16 +94,25 @@ namespace DataAccess
         }
 
         //Put existing Recipe
-        public void UpdateRecipe(Recipe recipe)
+        public async Task<Recipe> UpdateRecipe(Guid id,RecipeData rec)
         {
             try
             {
-                var recipeCheck = this._context.Recipes.SingleOrDefault(x => x.RecipeID == recipe.RecipeID);
-                if (recipeCheck != null)
-                {
-                    this._context.Entry<Recipe>(recipe).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                    this._context.SaveChanges();
-                }
+
+                var recipe = this._context.Recipes
+                    .Include(c => c.Account)
+                    .Include(c => c.Account.Role)
+                    .Where(x => x.RecipeID.Equals(id)).SingleOrDefault();
+
+                recipe.RecipeName = rec.RecipeName;
+                recipe.RecipeImage = rec.RecipeImage;
+                recipe.Description = rec.Description;
+                recipe.Status = rec.Status;
+
+
+                this._context.Recipes.Update(recipe);
+                await this._context.SaveChangesAsync();
+                return recipe;
             }
             catch (Exception ex)
             {

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BusinessObjects
@@ -17,7 +18,10 @@ namespace BusinessObjects
         public decimal? Price { get; set; }
         public string? Description { get; set; }
         [Required][MaxLength(10)] public string Status { get; set; }
-        public Account Account { get; set; }
-        public Recipe Recipe { get; set; }
+        public virtual Account Account { get; set; } = null!;
+        [JsonIgnore]
+        public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+        public virtual Recipe Recipe { get; set; } = null!;
+
     }
 }

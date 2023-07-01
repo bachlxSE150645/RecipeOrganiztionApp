@@ -20,7 +20,7 @@ namespace Repository
         private readonly RecipeDetailDAO dao;
 
         public List<RecipeDetail> GetRecipeDetails() => dao.GetRecipeDetails();
-        public List<RecipeDetail> GetRecipeDetailsByRecipeId(string recipeId) => dao.GetRecipeDetailsByRecipeId(recipeId);
+        public List<RecipeDetail> GetRecipeDetailsByRecipeId(Guid recipeId) => dao.GetRecipeDetailsByRecipeId(recipeId);
         public List<RecipeDetail> GetRecipeDetailsByIngredientId(string ingredientId) => dao.GetRecipeDetailsByIngredientId(ingredientId);
         public RecipeDetail GetRecipeDetailsByRecIdAndIngId(string recId, string IngId) => dao.GetRecipeDetailsByRecIdAndIngId(recId, IngId);
         public Task<RecipeDetail> AddRecipeDetail(RecipeDetailData recipeDetail) => dao.AddRecipeDetail(recipeDetail);
