@@ -18,15 +18,15 @@ namespace APIRAO.Controllers
             recRepo = new RecipeRepository(dbContext);
         }
         [HttpDelete("RecpiceId")]
-        public IActionResult DeleteApprovingRecipe(Recipe rec)
+        public IActionResult DeleteApprovingRecipe(Guid recId)
         {
             try
             {
-                var recID = (rec.RecipeID);
-                if (recID == null)
+                if (recId == null)
                 {
                     return NotFound();
                 }
+                var rec = recRepo.GetRecipesById(recId);
                 rec.Status = "false";
                 recRepo.UpdateRecipe(rec);
                 return NoContent();
@@ -38,16 +38,16 @@ namespace APIRAO.Controllers
             }
         }
         [HttpPut]
-        public async Task<IActionResult> ApprovedRecpice(Recipe rec)
+        public async Task<IActionResult> ApprovedRecpice(Guid recId)
         {
 
             try
             {
-                var recID = (rec.RecipeID);
-                if (recID == null)
+                if (recId == null)
                 {
                     return NotFound();
                 }
+                var rec = recRepo.GetRecipesById(recId);
                 rec.Status = "true";
                 recRepo.UpdateRecipe(rec);
                 return NoContent();
