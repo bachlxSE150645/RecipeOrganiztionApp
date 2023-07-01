@@ -21,13 +21,18 @@ namespace Repository
         private readonly RecipeDAO dao;
         private readonly RecipeDetailDAO detailDAO;
 
-        public Recipe GetRecipeByName(string name) {
-            Recipe recipe = this.dao.GetRecipesByName(name);
+        public async Task<List<Recipe>> GetRecipeByName(string name)
+        {
+            List<Recipe> recipes = this.dao.GetRecipesByName(name);
 
-            recipe.RecipeDetails = detailDAO.GetRecipeDetailsByRecipeId(recipe.RecipeID);
+            foreach (Recipe recipe in recipes)
+            {
+                recipe.RecipeDetails = detailDAO.GetRecipeDetailsByRecipeId(recipe.RecipeID);
+            }
 
-            return recipe;
+            return await Task.FromResult(recipes);
         }
+
         public Task<List<Recipe>> GetRecipes() => dao.GetRecipes();
         public Recipe GetRecipesById(Guid id) {
             Recipe recipe = this.dao.GetRecipesById(id);

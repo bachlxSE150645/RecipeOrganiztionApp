@@ -49,21 +49,21 @@ namespace DataAccess
             return recipe;
         }
         //Get By Name
-        public Recipe GetRecipesByName(string name)
+        public List<Recipe> GetRecipesByName(string name)
         {
-            var recipe = new Recipe();
+            var recipes = new List<Recipe>();
             try
             {
-                recipe = this._context.Recipes
+                recipes = this._context.Recipes
                     .Include(c => c.Account)
                     .Include(c => c.Account.Role)
-                    .Where(x => x.RecipeName.Contains(name)).SingleOrDefault();
+                    .Where(x => x.RecipeName.Contains(name)).ToList();
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return recipe;
+            return recipes;
         }
 
         //Post new Recipe

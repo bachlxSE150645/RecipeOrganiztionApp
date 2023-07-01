@@ -20,30 +20,16 @@ namespace APIRAO.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetRecipes()
+        public IActionResult GetRecipes(string recipeName = "")
         {
-            var reslut = await recipeRepo.GetRecipes();
             try
             {
-                return Ok(reslut);
+                var recipes = string.IsNullOrEmpty(recipeName) ? recipeRepo.GetRecipes() : recipeRepo.GetRecipeByName(recipeName);
+                return Ok(recipes);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-            }
-
-        }
-
-        [HttpGet("RecipeName")]
-        public async Task<IActionResult> GetRecipeByName(string RecipeName)
-        {
-            try
-            {
-                return Ok(recipeRepo.GetRecipeByName(RecipeName));
-            }
-            catch
-            {
-                return BadRequest();
             }
         }
 
