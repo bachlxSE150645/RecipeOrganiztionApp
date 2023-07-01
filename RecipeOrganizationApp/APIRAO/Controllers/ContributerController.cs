@@ -38,29 +38,25 @@ namespace APIRAO.Controllers
             }
         }
         [HttpPut]
-        public async Task<IActionResult> ApprovedRecpice(Guid repciceID, Recipe rec)
+        public async Task<IActionResult> ApprovedRecpice(Recipe rec)
         {
 
-            if (repciceID != rec.RecipeID)
-            {
-                return BadRequest();
-            }
             try
             {
-                rec.Status = "true";
-                recRepo.UpdateRecipe(rec);
-            }
-
-            catch (DbUpdateConcurrencyException)
-            {
-                if (recRepo.GetRecipesById(repciceID) == null)
+                var recID = (rec.RecipeID);
+                if (recID == null)
                 {
                     return NotFound();
                 }
-
-                throw;
+                rec.Status = "true";
+                recRepo.UpdateRecipe(rec);
+                return NoContent();
             }
-            return NoContent();
+            catch (Exception ex)
+            {
+
+                return NotFound(ex.Message);
+            }
 
         }
     }
