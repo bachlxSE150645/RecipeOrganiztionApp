@@ -20,7 +20,10 @@ namespace DataAccess
             var listRecipes = new List<Recipe>();
             try
             {
-                listRecipes = this._context.Recipes.Include(c => c.Account).Include(c => c.Account.Role).ToList();
+                listRecipes = this._context.Recipes
+                    .Include(c => c.Account)
+                    .Include(c => c.Account.Role)
+                    .ToList();
             } catch(Exception ex)
             {
                 throw ex;
@@ -34,9 +37,10 @@ namespace DataAccess
             try
             {
                 recipe = this._context.Recipes
+                    .Where(x => x.RecipeID.Equals(id))
                     .Include(c => c.Account)
                     .Include(c => c.Account.Role)
-                    .Where(x => x.RecipeID.Equals(id)).SingleOrDefault();
+                    .SingleOrDefault();
             }
             catch (Exception ex)
             {

@@ -36,9 +36,9 @@ namespace DataAccess
             try
             {
                 return _context.RecipeDetails
+                    .Where(x => Guid.Equals(x.RecipeID, recipeId))
                     .Include(c => c.Recipe)
-                    .Include(c => c.Ingredient)
-                    .Where(x => x.RecipeID.Equals(recipeId)).ToList();
+                    .Include(c => c.Ingredient).ToList();
             }
             catch (Exception ex)
             {
