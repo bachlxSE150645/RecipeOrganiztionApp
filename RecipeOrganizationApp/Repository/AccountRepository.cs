@@ -25,5 +25,7 @@ namespace Repository
         public Account UpdateAccount(Account account) => dao.UpdateAccount(account);
         public bool DeleteAccount(Account account) => dao.DeleteAccount(account);
 
+        public IEnumerable<Account> SearchAccountByUser(string UserName) =>dao.SearchAccountByUserName(UserName);
+        
     }
 }

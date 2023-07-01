@@ -27,7 +27,7 @@ namespace DataAccess
             return listRecipes;
         }
         //Get Recipe matches RecipeID
-        public  Recipe GetRecipesById(string id)
+        public  Recipe GetRecipesById(Guid id)
         {
             var recipe = new Recipe();
             try

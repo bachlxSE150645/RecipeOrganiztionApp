@@ -6,7 +6,7 @@ namespace Repository.Interfaces
     public interface IRecipeRepository
     {
         List<Recipe> GetRecipes();
-        Recipe GetRecipesById(string id);
+        Recipe GetRecipesById(Guid id);
         Task<Recipe> AddRecipe(RecipeData recipe);
         void UpdateRecipe(Recipe recipe);
         void DeleteRecipe(Recipe recipe);

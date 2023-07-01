@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace DataAccess
 {
@@ -36,6 +37,19 @@ namespace DataAccess
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+        }
+        public IEnumerable<Account> SearchAccountByUserName(string userName)
+        {
+            try
+            {
+                var accountUser = from x in _context.Accounts
+                                  where x.UserName.Contains(userName)
+                                  select x;
+                return accountUser;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);   
             }
         }
 

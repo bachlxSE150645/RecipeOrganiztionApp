@@ -16,5 +16,6 @@ namespace Repository.Interfaces
         Task<Account> AddAccount(SignUpData account);
         Account UpdateAccount(Account account);
         bool DeleteAccount(Account account);
+        IEnumerable<Account> SearchAccountByUser(string UserName);
     }
 }
