@@ -12,5 +12,6 @@ namespace BusinessObjects.MapData
         public string RecipeImage { get; set; }
         public string Description { get; set; }
         public Guid AccountID { get; set; }
+        public string Status { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BusinessObjects;
 using BusinessObjects.MapData;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
 {
@@ -30,11 +31,14 @@ namespace DataAccess
         }
 
         //Get Recipe Details by Recipe ID
-        public List<RecipeDetail> GetRecipeDetailsByRecipeId(string recipeId)
+        public List<RecipeDetail> GetRecipeDetailsByRecipeId(Guid recipeId)
         {
             try
             {
-                return _context.RecipeDetails.Where(x => x.RecipeID == Guid.Parse(recipeId)).ToList();
+                return _context.RecipeDetails
+                    .Include(c => c.Recipe)
+                    .Include(c => c.Ingredient)
+                    .Where(x => x.RecipeID.Equals(recipeId)).ToList();
             }
             catch (Exception ex)
             {
@@ -78,7 +82,10 @@ namespace DataAccess
                     IngredientID = inf.IngredientID,
                     RecipeID = inf.RecipeID,
                     Quantity = inf.Quantity,
-                    Unit = inf.Unit
+                    Unit = inf.Unit,
+                    Recipe = _context.Recipes.Where(c=>c.RecipeID == inf.RecipeID).FirstOrDefault(),
+                    Ingredient = _context.Ingredients.Where(c => c.IngredientID == inf.IngredientID).FirstOrDefault()
+
                 };
                 _context.RecipeDetails.Add(recipeDetail);
                 await _context.SaveChangesAsync();

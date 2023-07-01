@@ -18,19 +18,19 @@ namespace APIRAO.Controllers
             recipeDetailRepo = new RecipeDetailRepository(dbContext);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetDetail()
+        [HttpGet("{RecipeId}")]
+        public async Task<IActionResult> GetRecipeDetailsByRecipeID(Guid RecipeId)
         {
             try
             {
-                return Ok(recipeDetailRepo.GetRecipeDetails());
+                return Ok(recipeDetailRepo.GetRecipeDetailsByRecipeId(RecipeId));
             }
-            catch (Exception ex)
+            catch
             {
-                return BadRequest(ex.Message);
+                return BadRequest();
             }
-
         }
+
 
         [HttpPost]
         public async Task<IActionResult> PostRecipeDetail(RecipeDetailData inf)
