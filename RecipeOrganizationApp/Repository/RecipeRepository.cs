@@ -45,5 +45,8 @@ namespace Repository
         public Task<Recipe> AddRecipe(RecipeData recipe) => dao.AddRecipe(recipe);
         public Task<Recipe> UpdateRecipe(Guid id, RecipeData recipe) => dao.UpdateRecipe(id,recipe);
         public void DeleteRecipe(Recipe recipe) => dao.DeleteRecipe(recipe);
+
+        public void UpdateContributerApprove(Recipe recipe) => dao.UpdateContributerApprove(recipe);
+        
     }
 }

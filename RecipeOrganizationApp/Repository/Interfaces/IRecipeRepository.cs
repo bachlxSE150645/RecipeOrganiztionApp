@@ -11,5 +11,6 @@ namespace Repository.Interfaces
         Task<Recipe> AddRecipe(RecipeData recipe);
         Task<Recipe> UpdateRecipe(Guid id, RecipeData recipe);
         void DeleteRecipe(Recipe recipe);
+        void UpdateContributerApprove(Recipe recipe);
     }
 }

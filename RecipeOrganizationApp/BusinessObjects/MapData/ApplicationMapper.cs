@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessObjects;
+using BusinessObjects.DTO;
 
 namespace BusinessObjects
 {
@@ -8,7 +9,7 @@ namespace BusinessObjects
         public ApplicationMapper()
         {
             CreateMap<Account, SignUpData>().ReverseMap();
-            
+            CreateMap<Account, AccountDTO>().ReverseMap();
         }
     }
 }

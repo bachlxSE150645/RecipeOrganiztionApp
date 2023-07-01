@@ -8,7 +8,7 @@ namespace DataAccess
     {
         private readonly AppDBContext _context;
 
-        public RecipeDAO (AppDBContext dbContext)
+        public RecipeDAO(AppDBContext dbContext)
         {
             this._context = dbContext;
         }
@@ -24,46 +24,26 @@ namespace DataAccess
                     .Include(c => c.Account)
                     .Include(c => c.Account.Role)
                     .ToList();
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }
             return listRecipes;
         }
         //Get Recipe matches RecipeID
-        public  Recipe GetRecipesById(Guid id)
+        public Recipe GetRecipesById(Guid id)
         {
             var recipe = new Recipe();
             try
             {
-                recipe = this._context.Recipes
-                    .Where(x => x.RecipeID.Equals(id))
-                    .Include(c => c.Account)
-                    .Include(c => c.Account.Role)
-                    .SingleOrDefault();
+                recipe = this._context.Recipes.Where(x => x.RecipeID.Equals(id)).SingleOrDefault();
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
             return recipe;
-        }
-        //Get By Name
-        public List<Recipe> GetRecipesByName(string name)
-        {
-            var recipes = new List<Recipe>();
-            try
-            {
-                recipes = this._context.Recipes
-                    .Include(c => c.Account)
-                    .Include(c => c.Account.Role)
-                    .Where(x => x.RecipeName.Contains(name)).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            return recipes;
         }
 
         //Post new Recipe
@@ -79,9 +59,7 @@ namespace DataAccess
                     Description = recipe.Description,
                     AccountID = recipe.AccountID,
                     Status = "waitting",
-                    CreateDate = DateTime.Now,
-                    Account = await _context.Accounts.FirstOrDefaultAsync(c => c.AccountID == recipe.AccountID)
-
+                    CreateDate = DateTime.Now
                 };
                 this._context.Recipes.Add(recipeAdd);
                 await this._context.SaveChangesAsync();
@@ -94,7 +72,7 @@ namespace DataAccess
         }
 
         //Put existing Recipe
-        public async Task<Recipe> UpdateRecipe(Guid id,RecipeData rec)
+        public async Task<Recipe> UpdateRecipe(Guid id, RecipeData rec)
         {
             try
             {
@@ -118,6 +96,38 @@ namespace DataAccess
             {
                 throw new Exception(ex.Message);
             }
+        }
+        public void UpdateContributerApprove(Recipe recipe)
+        {
+            try
+            {
+                var recipeCheck = this._context.Recipes.SingleOrDefault(x => x.RecipeID == recipe.RecipeID);
+                if (recipeCheck != null)
+                {
+                    this._context.Entry<Recipe>(recipe).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    this._context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public List<Recipe> GetRecipesByName(string name)
+        {
+            var recipes = new List<Recipe>();
+            try
+            {
+                recipes = this._context.Recipes
+                    .Include(c => c.Account)
+                    .Include(c => c.Account.Role)
+                    .Where(x => x.RecipeName.Contains(name)).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return recipes;
         }
 
         //Delete existing Recipe
