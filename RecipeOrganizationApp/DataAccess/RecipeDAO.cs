@@ -1,5 +1,6 @@
 ﻿using BusinessObjects;
 using BusinessObjects.MapData;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
 {
@@ -19,7 +20,7 @@ namespace DataAccess
             var listRecipes = new List<Recipe>();
             try
             {
-                listRecipes = this._context.Recipes.ToList();
+                listRecipes = this._context.Recipes.Include(r => r.Account).ToList();
             } catch(Exception ex)
             {
                 throw ex;
@@ -32,7 +33,7 @@ namespace DataAccess
             var recipe = new Recipe();
             try
             {
-                recipe = this._context.Recipes.Where(x => x.RecipeID.Equals(id)).SingleOrDefault();
+                recipe = this._context.Recipes.Where(x => x.RecipeID.Equals(id)).Include(r => r.Account).SingleOrDefault();
             }
             catch (Exception ex)
             {
