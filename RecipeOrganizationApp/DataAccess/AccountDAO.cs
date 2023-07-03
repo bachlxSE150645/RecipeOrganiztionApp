@@ -12,7 +12,7 @@ namespace DataAccess
         private readonly AppDBContext _context;
 
         private PaginatedList<AccountDTO> items;
-        private readonly int pageSize = 4;
+        private readonly int pageSize = 10;
         public AccountDAO(AppDBContext context)
         {
 
@@ -31,7 +31,7 @@ namespace DataAccess
                                             select a;
             if (!String.IsNullOrEmpty(searchString))
             {
-                accountIQ = accountIQ.Where(a => a.UserName.Contains(searchString) && a.Email.Contains(searchString));
+                accountIQ = accountIQ.Where(a => a.UserName.Contains(searchString) || a.Email.Contains(searchString));
             }
             return await PaginatedList<Account>.CreateAsync(accountIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
         }
