@@ -46,7 +46,7 @@ namespace APIRAO.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAccounts(string searchString, int pageIndex)
+        public async Task<IActionResult> GetAccounts(string? searchString, int pageIndex = 1)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace APIRAO.Controllers
             }
         }
 
-        [HttpGet("AccountID")]
+        [HttpGet("{AccountID}")]
         public async Task<IActionResult> GetAccounts(Guid AccountID)
         {
             try

@@ -21,7 +21,7 @@ namespace APIRAO.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAccounts(string searchString, int? pageIndex)
+        public async Task<IActionResult> GetAccounts(string? searchString, int pageIndex = 1)
         {
             try
             {
@@ -44,18 +44,7 @@ namespace APIRAO.Controllers
                 return BadRequest();
             }
         }
-        [HttpGet("{userName}")]
-        public ActionResult<IEnumerable<Account>> SreachAccountByUserName(string userName)
-        {
-            try
-            {
-                return Ok(accRepo.SearchAccountByUser(userName));
-            }
-            catch
-            {
-                return BadRequest();
-            }
-        }
+      
         [HttpPost]
         public async Task<IActionResult> PostAccount(SignUpData accountInfo)
         {

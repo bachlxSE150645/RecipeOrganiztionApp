@@ -38,15 +38,16 @@ namespace Repository
             Recipe recipe = this.dao.GetRecipesById(id);
 
             var details = detailDAO.GetRecipeDetailsByRecipeId(recipe.RecipeID);
+            Console.WriteLine("count ", details.Count);
             recipe.RecipeDetails = details;
 
             return recipe;
         } 
-        public Task<Recipe> AddRecipe(RecipeData recipe) => dao.AddRecipe(recipe);
-        public Task<Recipe> UpdateRecipe(Guid id, RecipeData recipe) => dao.UpdateRecipe(id,recipe);
+        public Task<Recipe> AddRecipe(Recipe recipe) => dao.AddRecipe(recipe);
+        public Task<Recipe> UpdateRecipe(Guid id, Recipe recipe) => dao.UpdateRecipe(id,recipe);
         public void DeleteRecipe(Recipe recipe) => dao.DeleteRecipe(recipe);
 
         public void UpdateContributerApprove(Recipe recipe) => dao.UpdateContributerApprove(recipe);
-        
+
     }
 }

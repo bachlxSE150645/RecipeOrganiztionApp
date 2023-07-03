@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.MapData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,12 @@ namespace Repository.Interfaces
 {
     public interface IMealRepository
     {
-        List<Meal> GetMeals();
-        Meal GetMealsById(string id);
-        void AddMeal(Meal meal);
-        void UpdateMeal(Meal meal);
-        void DeleteMeal(Meal meal);
+        List<Meal> GetAllMeals();
+        Meal GetMealsById(Guid id);
+
+        Meal AddMeal(MealData inf);
+        Meal UpdateMeal(Guid mealID, decimal mealPrice, string mealDescription);
+
+        bool DeleteMeal(Guid mealID);
     }
 }

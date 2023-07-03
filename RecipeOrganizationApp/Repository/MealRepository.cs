@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.MapData;
 using DataAccess;
 using Repository.Interfaces;
 using System;
@@ -18,10 +19,11 @@ namespace Repository
 
         private readonly MealDAO dao;
 
-        public List<Meal> GetMeals() => dao.GetMeals();
-        public Meal GetMealsById(string id) => dao.GetMealsById(id);
-        public void AddMeal(Meal meal) => dao.AddMeal(meal);
-        public void UpdateMeal(Meal meal) => dao.UpdateMeal(meal);
-        public void DeleteMeal(Meal meal) => dao.DeleteMeal(meal);
+        public List<Meal> GetAllMeals() => dao.GetMeals();
+        public Meal GetMealsById(Guid id) => dao.GetMealsById(id);
+
+        public Meal AddMeal(MealData inf) => dao.AddMeal(inf);
+        public Meal UpdateMeal(Guid mealID, decimal mealPrice, string mealDescription) => dao.UpdateMeal(mealID, mealPrice, mealDescription);
+        public bool DeleteMeal(Guid mealID) => dao.DeleteMeal(mealID);
     }
 }

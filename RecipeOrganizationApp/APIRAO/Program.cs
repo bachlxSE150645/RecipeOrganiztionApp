@@ -1,3 +1,4 @@
+using APIRAO.Controllers.Helpers;
 using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using Repository;
@@ -23,7 +24,7 @@ builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IWishListItemRepository, WishListItemRepository>();
 builder.Services.AddScoped<IWishListRepository, WishListRepository>();
 
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 
 builder.Services.AddControllers();
