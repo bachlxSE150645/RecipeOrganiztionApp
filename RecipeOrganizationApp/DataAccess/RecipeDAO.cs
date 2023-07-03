@@ -1,5 +1,4 @@
 ﻿using BusinessObjects;
-using BusinessObjects.MapData;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
@@ -37,7 +36,7 @@ namespace DataAccess
             var recipe = new Recipe();
             try
             {
-                recipe = this._context.Recipes.Where(x => x.RecipeID.Equals(id)).SingleOrDefault();
+                recipe = this._context.Recipes.Where(x => x.RecipeID.Equals(id)).Include(c => c.Account).SingleOrDefault();
             }
             catch (Exception ex)
             {
@@ -47,7 +46,7 @@ namespace DataAccess
         }
 
         //Post new Recipe
-        public async Task<Recipe> AddRecipe(RecipeData recipe)
+        public async Task<Recipe> AddRecipe(Recipe recipe)
         {
             try
             {
@@ -72,7 +71,7 @@ namespace DataAccess
         }
 
         //Put existing Recipe
-        public async Task<Recipe> UpdateRecipe(Guid id, RecipeData rec)
+        public async Task<Recipe> UpdateRecipe(Guid id, Recipe rec)
         {
             try
             {

@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Interfaces;
 using Repository;
-using BusinessObjects.MapData;
+using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using APIRAO.Controllers.DTOs.Recipe;
 
 namespace APIRAO.Controllers
 {
@@ -13,10 +15,12 @@ namespace APIRAO.Controllers
     public class RecipeController : ControllerBase
     {
         private readonly IRecipeRepository recipeRepo;
+        private readonly IMapper _mapper;
 
-        public RecipeController(IRecipeRepository _recipeRepository)
+        public RecipeController(IRecipeRepository _recipeRepository, IMapper mapper)
         {
             this.recipeRepo = _recipeRepository;
+            this._mapper = mapper;
         }
 
         [HttpGet]
@@ -48,15 +52,27 @@ namespace APIRAO.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostRecipe(RecipeData inf)
+        public async Task<IActionResult> PostRecipe(CreateRecipeDTO dto)
         {
-            var result = await recipeRepo.AddRecipe(inf);
-            if (result == null)
+            var recipe = _mapper.Map<Recipe>(dto);
+            recipe.Status = "pending";
+            try
             {
-                return BadRequest("Something wrong!");
+                if (recipe == null)
+                {
+                    return BadRequest("Something wrong!");
+                }
+                else
+                {
+                    var result = await recipeRepo.AddRecipe(recipe);
+                    return Ok(result);
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
             }
 
-            return Ok(result);
         }
 
         [HttpDelete("{RecipeId}")]
@@ -73,7 +89,7 @@ namespace APIRAO.Controllers
         }
 
         [HttpPut("{Recipeid}")]
-        public async Task<IActionResult> UpdateRecipe(Guid Recipeid, RecipeData rec)
+        public async Task<IActionResult> UpdateRecipe(Guid Recipeid, Recipe rec)
         {
             var result = await recipeRepo.UpdateRecipe(Recipeid, rec);
             if (result == null)
