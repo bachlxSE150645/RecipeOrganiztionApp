@@ -17,43 +17,42 @@ namespace APIRAO.Controllers
             this.orderRepo = _orderRepository;
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetMeals()
-        //{
-        //    try
-        //    {
-        //        return Ok(mealRepo.GetAllMeals());
-        //    }
-        //    catch
-        //    {
-        //        return BadRequest();
-        //    }
-        //}
+        [HttpGet]
+        public async Task<IActionResult> GetOrders()
+        {
+            try
+            {
+                return Ok(orderRepo.GetOrders());
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
 
-        //[HttpGet("{MealId}")]
-        //public async Task<IActionResult> GetMealID(Guid MealId)
-        //{
-        //    try
-        //    {
-        //        return Ok(mealRepo.GetMealsById(MealId));
-        //    }
-        //    catch
-        //    {
-        //        return BadRequest();
-        //    }
-        //}
+        [HttpGet("{OrderId}")]
+        public async Task<IActionResult> GetOrderID(Guid OrderId)
+        {
+            try
+            {
+                return Ok(orderRepo.GetOrdersById(OrderId.ToString()));
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
 
-        //[HttpPost]
-        //public async Task<IActionResult> PostMeal(MealData inf)
-        //{
-        //    var result = mealRepo.AddMeal(inf);
-        //    if (result == null)
-        //    {
-        //        return BadRequest("Something wrong!");
-        //    }
-
-        //    return Ok(result);
-        //}
+        [HttpPost]
+        public async Task<IActionResult> PostOrder(OrderData inf)
+        {
+            var result = await orderRepo.AddOrder(inf);
+            if (result == null)
+            {
+                return BadRequest("Something wrong!");
+            }
+            return Ok(result);
+        }
 
         //[HttpDelete("{MealId}")]
         //public async Task<IActionResult> DeleteMeal(Guid MealId)

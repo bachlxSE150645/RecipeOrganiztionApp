@@ -57,7 +57,7 @@ namespace DataAccess
                     RecipeImage = recipe.RecipeImage,
                     Description = recipe.Description,
                     AccountID = recipe.AccountID,
-                    Status = "waitting",
+                    Status = "waiting",
                     CreateDate = DateTime.Now
                 };
                 this._context.Recipes.Add(recipeAdd);
