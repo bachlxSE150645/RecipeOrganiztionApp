@@ -21,11 +21,11 @@ namespace APIRAO.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAccounts(string? searchString, int pageIndex = 1)
+        public async Task<ActionResult<List<Account>>> GetAccounts(string? searchString, int pageIndex = 1)
         {
             try
             {
-                return Ok(accRepo.GetAccounts(searchString, pageIndex));
+                return Ok(await accRepo.GetAccounts(searchString, pageIndex));
             }
             catch
             {
