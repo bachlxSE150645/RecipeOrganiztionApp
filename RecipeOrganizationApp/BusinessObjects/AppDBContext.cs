@@ -120,7 +120,7 @@ namespace BusinessObjects
 
             modelBuilder.Entity<RecipeDetail>(entity =>
             {
-                entity.HasNoKey();
+                //entity.HasNoKey();
 
                 entity.HasIndex(e => e.IngredientID, "IX_RecipeDetails_IngredientID");
 

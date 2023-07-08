@@ -23,7 +23,7 @@ namespace Repository
         public List<RecipeDetail> GetRecipeDetailsByRecipeId(Guid recipeId) => dao.GetRecipeDetailsByRecipeId(recipeId);
         public List<RecipeDetail> GetRecipeDetailsByIngredientId(string ingredientId) => dao.GetRecipeDetailsByIngredientId(ingredientId);
         public RecipeDetail GetRecipeDetailsByRecIdAndIngId(string recId, string IngId) => dao.GetRecipeDetailsByRecIdAndIngId(recId, IngId);
-        public Task<RecipeDetail> AddRecipeDetail(RecipeDetailData recipeDetail) => dao.AddRecipeDetail(recipeDetail);
+        public Task<RecipeDetail> AddRecipeDetail(RecipeDetail recipeDetail) => dao.AddRecipeDetail(recipeDetail);
         public void UpdateRecipeDetail(RecipeDetail recipeDetail) => dao.UpdateRecipeDetail(recipeDetail);
         public void DeleteRecipeDetail(RecipeDetail recipeDetail) => dao.DeleteRecipeDetail(recipeDetail);
     }

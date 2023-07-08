@@ -73,23 +73,13 @@ namespace DataAccess
         }
 
         //Post new Recipe Detail
-        public async Task<RecipeDetail> AddRecipeDetail(RecipeDetailData inf)
+        public async Task<RecipeDetail> AddRecipeDetail(RecipeDetail inf)
         {
             try
             {
-                var recipeDetail = new RecipeDetail
-                {
-                    IngredientID = inf.IngredientID,
-                    RecipeID = inf.RecipeID,
-                    Quantity = inf.Quantity,
-                    Unit = inf.Unit,
-                    Recipe = _context.Recipes.Where(c=>c.RecipeID == inf.RecipeID).FirstOrDefault(),
-                    Ingredient = _context.Ingredients.Where(c => c.IngredientID == inf.IngredientID).FirstOrDefault()
-
-                };
-                _context.RecipeDetails.Add(recipeDetail);
+                _context.RecipeDetails.Add(inf);
                 await _context.SaveChangesAsync();
-                return recipeDetail;
+                return inf;
             }
             catch (Exception ex)
             {

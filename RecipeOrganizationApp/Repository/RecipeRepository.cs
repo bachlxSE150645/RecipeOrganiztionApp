@@ -1,6 +1,8 @@
 ﻿using BusinessObjects;
 using BusinessObjects.MapData;
 using DataAccess;
+using Microsoft.IdentityModel.Tokens;
+using Repository.DTOs.Recipe;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -44,7 +46,24 @@ namespace Repository
             return recipe;
         } 
         public Task<Recipe> AddRecipe(Recipe recipe) => dao.AddRecipe(recipe);
-        public Task<Recipe> UpdateRecipe(Guid id, Recipe recipe) => dao.UpdateRecipe(id,recipe);
+        public Task<Recipe> UpdateRecipe(Guid id, UpdateRecipeDTO recipe)
+        {
+            var r = dao.GetRecipesById(id);
+            if (!String.IsNullOrEmpty(recipe.Description))
+            {
+                r.Description = recipe.Description;
+            }
+            if (!String.IsNullOrEmpty(recipe.RecipeImage))
+            {
+                r.RecipeImage = recipe.RecipeImage;
+            }
+            if (!String.IsNullOrEmpty(recipe.RecipeName))
+            {
+                r.RecipeName = recipe.RecipeName;
+            }
+            r.RecipeName = recipe.RecipeName;
+            return dao.UpdateRecipe(id, r);
+        }
         public void DeleteRecipe(Recipe recipe) => dao.DeleteRecipe(recipe);
 
         public void UpdateContributerApprove(Recipe recipe) => dao.UpdateContributerApprove(recipe);

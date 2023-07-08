@@ -33,7 +33,7 @@ namespace APIRAO.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> PostRecipeDetail(RecipeDetailData inf)
+        public async Task<IActionResult> PostRecipeDetail(RecipeDetail inf)
         {
             var result = await recipeDetailRepo.AddRecipeDetail(inf);
             if (result == null)

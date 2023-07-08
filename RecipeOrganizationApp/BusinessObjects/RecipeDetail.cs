@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace BusinessObjects
 {
+    [PrimaryKey(nameof(RecipeID), nameof(IngredientID))]
     public class RecipeDetail
     {
         [ForeignKey("Recipe")]
