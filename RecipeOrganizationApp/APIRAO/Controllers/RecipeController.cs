@@ -6,7 +6,8 @@ using Repository;
 using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
-using APIRAO.Controllers.DTOs.Recipe;
+using Repository.DTOs.Recipe;
+
 
 namespace APIRAO.Controllers
 {
@@ -15,11 +16,13 @@ namespace APIRAO.Controllers
     public class RecipeController : ControllerBase
     {
         private readonly IRecipeRepository recipeRepo;
+        private readonly IRecipeDetailRepository detailRepo;
         private readonly IMapper _mapper;
 
-        public RecipeController(IRecipeRepository _recipeRepository, IMapper mapper)
+        public RecipeController(IRecipeRepository _recipeRepository, IRecipeDetailRepository _detailRepo, IMapper mapper)
         {
             this.recipeRepo = _recipeRepository;
+            this.detailRepo = _detailRepo;
             this._mapper = mapper;
         }
 
@@ -65,6 +68,14 @@ namespace APIRAO.Controllers
                 else
                 {
                     var result = await recipeRepo.AddRecipe(recipe);
+                    foreach(var item in dto.Ingredients)
+                    {
+                        var detail = _mapper.Map<RecipeDetail>(item);
+                        if (detail != null) {
+                            detail.RecipeID = result.RecipeID;
+                            await detailRepo.AddRecipeDetail(detail);
+                        }
+                    }
                     return Ok(result);
                 }
             }
@@ -89,9 +100,9 @@ namespace APIRAO.Controllers
         }
 
         [HttpPut("{Recipeid}")]
-        public async Task<IActionResult> UpdateRecipe(Guid Recipeid, Recipe rec)
+        public async Task<IActionResult> UpdateRecipe(Guid Recipeid, UpdateRecipeDTO dto)
         {
-            var result = await recipeRepo.UpdateRecipe(Recipeid, rec);
+            var result = await recipeRepo.UpdateRecipe(Recipeid, dto);
             if (result == null)
             {
                 return BadRequest(result);

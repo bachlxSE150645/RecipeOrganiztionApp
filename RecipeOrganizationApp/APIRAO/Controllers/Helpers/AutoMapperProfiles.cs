@@ -1,6 +1,6 @@
-﻿using APIRAO.Controllers.DTOs.Recipe;
-using AutoMapper;
+﻿using AutoMapper;
 using BusinessObjects;
+using Repository.DTOs.Recipe;
 
 namespace APIRAO.Controllers.Helpers
 {
@@ -8,10 +8,8 @@ namespace APIRAO.Controllers.Helpers
     {
         public AutoMapperProfiles()
         {
-            CreateMap<Recipe, CreateRecipeDTO>();
-
-            CreateMap<CreateRecipeDTO, Recipe>();
-
+            CreateMap<Recipe, CreateRecipeDTO>().ReverseMap();
+            CreateMap<RecipeDetail, RecipeIngredientDTO>().ReverseMap();
         }
     }
 }
