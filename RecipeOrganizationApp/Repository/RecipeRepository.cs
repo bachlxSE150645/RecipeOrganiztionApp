@@ -1,4 +1,5 @@
-﻿using BusinessObjects;
+﻿using AutoMapper;
+using BusinessObjects;
 using BusinessObjects.MapData;
 using DataAccess;
 using Microsoft.IdentityModel.Tokens;
@@ -61,7 +62,7 @@ namespace Repository
             {
                 r.RecipeName = recipe.RecipeName;
             }
-            r.RecipeName = recipe.RecipeName;
+            
             return dao.UpdateRecipe(id, r);
         }
         public void DeleteRecipe(Recipe recipe) => dao.DeleteRecipe(recipe);
