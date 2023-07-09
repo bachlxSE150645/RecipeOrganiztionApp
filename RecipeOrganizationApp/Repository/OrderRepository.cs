@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.MapData;
 using DataAccess;
 using Repository.Interfaces;
 using System;
@@ -20,7 +21,7 @@ namespace Repository
 
         public List<Order> GetOrders() => dao.GetOrders();
         public Order GetOrdersById(string id) => dao.GetOrdersById(id);
-        public void AddOrder(Order order) => dao.AddOrder(order);
+        public Task<Order> AddOrder(OrderData order) => dao.AddOrder(order);
         public void UpdateOrder(Order order) => dao.UpdateOrder(order);
         public void DeleteOrder(Order order) => dao.DeleteOrder(order);
     }
