@@ -30,6 +30,24 @@ namespace DataAccess
             }
         }
 
+        public List<Meal> GetMealsByName(string mealName)
+        {
+            var meal = new List<Meal>();
+            try
+            {
+                meal = this._context.Meals
+                    .Include(c => c.Account)
+                    .Include(c => c.Recipe)
+                    .Where(x => x.Recipe.RecipeName.Contains(mealName))
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return meal;
+        }
+
         //Get Meal matches ID
         public Meal GetMealsById(Guid id)
         {

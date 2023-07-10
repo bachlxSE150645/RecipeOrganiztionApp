@@ -1,4 +1,5 @@
-﻿using BusinessObjects.MapData;
+﻿using BusinessObjects;
+using BusinessObjects.MapData;
 using DataAccess;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,20 +19,21 @@ namespace APIRAO.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMeals()
+        public async Task<IActionResult> GetMeals(string? recipeName = "")
         {
-            try
+            if (string.IsNullOrWhiteSpace(recipeName))
             {
                 return Ok(mealRepo.GetAllMeals());
             }
-            catch
+            else
             {
-                return BadRequest();
+                List<Meal> meal = mealRepo.GetMealsByName(recipeName);
+                return Ok(await Task.FromResult(meal));
             }
         }
 
         [HttpGet("{MealId}")]
-        public async Task<IActionResult> GetMealID(Guid MealId)
+        public async Task<IActionResult> GetMealByID(Guid MealId)
         {
             try
             {
