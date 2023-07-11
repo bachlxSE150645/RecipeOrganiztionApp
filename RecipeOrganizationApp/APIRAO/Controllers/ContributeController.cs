@@ -17,7 +17,7 @@ namespace APIRAO.Controllers
         {
             recRepo = recipeRepository;
         }
-        [HttpDelete("RecpiceId")]
+        [HttpDelete("RecipeId")]
         public IActionResult DeleteApprovingRecipe(Guid recId)
         {
             try

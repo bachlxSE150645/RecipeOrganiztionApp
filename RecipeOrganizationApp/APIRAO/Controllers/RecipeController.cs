@@ -100,9 +100,29 @@ namespace APIRAO.Controllers
         }
 
         [HttpPut("{Recipeid}")]
-        public async Task<IActionResult> UpdateRecipe(Guid Recipeid, UpdateRecipeDTO dto)
+        public async Task<IActionResult> UpdateRecipe(Guid Recipeid, [FromBody] UpdateRecipeDTO dto)
         {
             var result = await recipeRepo.UpdateRecipe(Recipeid, dto);
+            var current = recipeRepo.GetRecipesById(Recipeid);
+            if(current == null)
+            {
+                return BadRequest();
+            }
+
+            foreach (var detail in current.RecipeDetails)
+            {
+                Console.WriteLine(detail);
+                if (detail != null)
+                {
+                   detailRepo.DeleteRecipeDetail(detail);
+                }
+            }
+            foreach (var newDetail in dto.Ingredients)
+            {
+                var detail = _mapper.Map<RecipeDetail>(newDetail);
+                detail.RecipeID = result.RecipeID;
+                await detailRepo.AddRecipeDetail(detail);
+            }
             if (result == null)
             {
                 return BadRequest(result);

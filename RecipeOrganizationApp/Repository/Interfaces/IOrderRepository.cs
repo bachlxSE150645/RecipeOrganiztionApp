@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.MapData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Repository.Interfaces
     {
         List<Order> GetOrders();
         Order GetOrdersById(string id);
-        void AddOrder(Order order);
+        Task<Order> AddOrder(OrderData order);
         void UpdateOrder(Order order);
         void DeleteOrder(Order order);
     }

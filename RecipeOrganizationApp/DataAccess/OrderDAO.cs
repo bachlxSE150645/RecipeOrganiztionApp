@@ -1,4 +1,6 @@
 ﻿using BusinessObjects;
+using BusinessObjects.MapData;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
 {
@@ -29,7 +31,7 @@ namespace DataAccess
         {
             try
             {
-                return _context.Orders.SingleOrDefault(x => x.OrderID.Equals(id));
+                return _context.Orders.SingleOrDefault(x => x.OrderID.ToString().Equals(id));
             }
             catch (Exception ex)
             {
@@ -38,22 +40,25 @@ namespace DataAccess
         }
 
         //Post new Order
-        public void AddOrder(Order order)
+        public async Task<Order> AddOrder(OrderData order)
         {
             try
             {
+                var meal = await _context.Meals!.FirstOrDefaultAsync(c => c.MealID.ToString().Equals(order.MealID.ToString()));
                 var orderAdd = new Order
                 {
+                    OrderID = Guid.NewGuid(),
                     MealID = order.MealID,
                     AccountID = order.AccountID,
-                    CreateDate = order.CreateDate,
+                    CreateDate = DateTime.Now,
                     Quantity = order.Quantity,
-                    TotalPrice = order.TotalPrice,
-                    Status = order.Status,
+                    TotalPrice = meal.Price * order.Quantity,
+                    Status = "waiting",
                     Detail = order.Detail
                 };
                 _context.Orders.Add(orderAdd);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
+                return orderAdd;
             }
             catch (Exception ex)
             {
