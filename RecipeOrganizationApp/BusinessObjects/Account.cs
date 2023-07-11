@@ -14,7 +14,7 @@ namespace BusinessObjects
     public class Account
     {
         [Key][Required] public Guid AccountID { get; set; }
-        [MaxLength(50)] public string? UserName { get;set; }
+        [MaxLength(50)] public string? UserName { get; set; }
         [MaxLength(50)] public string? Password { get; set; }
         [ForeignKey("Role")][Required] public Guid RoleID { get; set; }
         [MaxLength(50)] public string? Email { get; set; }
