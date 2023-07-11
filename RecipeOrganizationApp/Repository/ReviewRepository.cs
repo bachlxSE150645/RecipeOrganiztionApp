@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.MapData;
 using DataAccess;
 using Repository.Interfaces;
 using System;
@@ -18,8 +19,13 @@ namespace Repository
 
         private readonly ReviewDAO dao;
 
-        public void AddReview(Review review) => dao.AddReview(review);
-        public void UpdateReview(Review review) => dao.UpdateReview(review);
-        public void DeleteReview(Review review) => dao.DeleteReview(review);
+        public List<Review> GetAllReview() => dao.GetReviews();
+        public Review GetReviewById(Guid reviewID) => dao.GetReviewsByReviewId(reviewID);
+        public List<Review> GetReviewByRecipe(Guid recipe) => dao.GetReviewsByRecipeId(recipe);
+
+        public Review AddReview(ReviewData review) => dao.AddReview(review);
+        public Review UpdateReview(Guid ReviewId, string? newContent, float rating) 
+            => dao.UpdateReview(ReviewId, newContent, rating);
+        public bool DeleteReview(Guid reviewID) => dao.DeleteReview(reviewID);
     }
 }

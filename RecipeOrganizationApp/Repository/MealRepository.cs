@@ -23,7 +23,7 @@ namespace Repository
         public Meal GetMealsById(Guid id) => dao.GetMealsById(id);
         public List<Meal> GetMealsByName(string mealName) => dao.GetMealsByName(mealName);
         public Meal AddMeal(MealData inf) => dao.AddMeal(inf);
-        public Meal UpdateMeal(Guid mealID, decimal mealPrice, string mealDescription) => dao.UpdateMeal(mealID, mealPrice, mealDescription);
+        public Meal UpdateMeal(Guid mealID, decimal mealPrice, string mealDescription, bool saleornot) => dao.UpdateMeal(mealID, mealPrice, mealDescription,saleornot);
         public bool DeleteMeal(Guid mealID) => dao.DeleteMeal(mealID);
     }
 }
