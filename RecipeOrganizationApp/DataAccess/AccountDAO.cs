@@ -1,7 +1,6 @@
 ﻿using APIRAO.Lib;
 using AutoMapper;
 using BusinessObjects;
-using BusinessObjects.DTO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
@@ -11,7 +10,7 @@ namespace DataAccess
     {
         private readonly AppDBContext _context;
 
-        private PaginatedList<AccountDTO> items;
+        private PaginatedList<AccountDAO> items;
         
         private readonly int pageSize = 10;
         public AccountDAO(AppDBContext context)
