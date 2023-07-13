@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessObjects.MapData;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -25,5 +26,7 @@ namespace BusinessObjects
         public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
         [NotMapped]
         public virtual ICollection<RecipeDetail> RecipeDetails { get; set; } = new List<RecipeDetail>();
+        [NotMapped]
+        public virtual RecipeMealDTO Meal { get; set; }
     }
 }

@@ -141,5 +141,23 @@ namespace DataAccess
                 throw new Exception(ex.Message);
             }
         }
+
+        public Meal GetMealByRecipeId(Guid recipeId)
+        {
+            try
+            {
+
+                var  meal = _context.Meals
+                    .Where(x => Guid.Equals(x.RecipeID, recipeId))
+                    .Include(c => c.Account)
+                    .Include(c => c.Recipe).FirstOrDefault();
+                return meal;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception();
+            }
+        }
     }
 }

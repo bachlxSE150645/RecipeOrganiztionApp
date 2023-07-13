@@ -25,5 +25,6 @@ namespace Repository
         public Meal AddMeal(MealData inf) => dao.AddMeal(inf);
         public Meal UpdateMeal(Guid mealID, decimal mealPrice, string mealDescription, bool saleornot) => dao.UpdateMeal(mealID, mealPrice, mealDescription,saleornot);
         public bool DeleteMeal(Guid mealID) => dao.DeleteMeal(mealID);
+        public Meal GetMealByRecipeId(Guid recipeId) => dao.GetMealByRecipeId(recipeId);
     }
 }

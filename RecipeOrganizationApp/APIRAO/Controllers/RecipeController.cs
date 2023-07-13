@@ -7,7 +7,7 @@ using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Repository.DTOs.Recipe;
-
+using BusinessObjects.MapData;
 
 namespace APIRAO.Controllers
 {
@@ -17,12 +17,14 @@ namespace APIRAO.Controllers
     {
         private readonly IRecipeRepository recipeRepo;
         private readonly IRecipeDetailRepository detailRepo;
+        private readonly IMealRepository mealRepo;
         private readonly IMapper _mapper;
 
-        public RecipeController(IRecipeRepository _recipeRepository, IRecipeDetailRepository _detailRepo, IMapper mapper)
+        public RecipeController(IRecipeRepository _recipeRepository, IRecipeDetailRepository _detailRepo, IMealRepository _mealRepository,IMapper mapper)
         {
             this.recipeRepo = _recipeRepository;
             this.detailRepo = _detailRepo;
+            this.mealRepo = _mealRepository;
             this._mapper = mapper;
         }
 
@@ -46,7 +48,14 @@ namespace APIRAO.Controllers
         {
             try
             {
-                return Ok(recipeRepo.GetRecipesById(RecipeId));
+                var recipe = recipeRepo.GetRecipesById(RecipeId);
+                var meal = mealRepo.GetMealByRecipeId(RecipeId);
+                if (meal != null)
+                {
+                    var recipeMeal = _mapper.Map<RecipeMealDTO>(meal);
+                    recipe.Meal = recipeMeal;
+                }
+                return Ok(recipe);
             }
             catch
             {
@@ -58,7 +67,7 @@ namespace APIRAO.Controllers
         public async Task<IActionResult> PostRecipe(CreateRecipeDTO dto)
         {
             var recipe = _mapper.Map<Recipe>(dto);
-            recipe.Status = "pending";
+            recipe.Status = "waiting";
             try
             {
                 if (recipe == null)
