@@ -16,7 +16,7 @@ namespace DataAccess
         {
             try
             {
-                return _context.Ingredients.ToList();
+                return _context.Ingredients.Where(x => x.Status == true).ToList();
             }
             catch (Exception ex)
             {
@@ -29,7 +29,7 @@ namespace DataAccess
         {
             try
             {
-                return _context.Ingredients.SingleOrDefault(x => x.IngredientID == id);
+                return _context.Ingredients.SingleOrDefault(x => x.IngredientID == id && x.Status == true);
             }
             catch (Exception ex)
             {
@@ -77,14 +77,15 @@ namespace DataAccess
         }
 
         //Delete existing Ingredient
-        public void DeleteIngredient(Ingredient ingredient)
+        public void DeleteIngredient(Guid ingredient)
         {
             try
             {
-                var existingIngredient = _context.Ingredients.SingleOrDefault(x => x.IngredientID.Equals(ingredient.IngredientID));
+                var existingIngredient = _context.Ingredients.SingleOrDefault(x => x.IngredientID.Equals(ingredient));
                 if (existingIngredient != null)
                 {
-                    _context.Ingredients.Remove(existingIngredient);
+                    existingIngredient.Status = false;
+                    _context.Ingredients.Update(existingIngredient);
                     _context.SaveChanges();
                 }
             }

@@ -55,5 +55,19 @@ namespace APIRAO.Controllers
            
             return Ok(result);
         }
+
+        [HttpDelete("{IngId}")]
+        public async Task<IActionResult> DeleteIng(Guid IngId)
+        {
+            try
+            {
+                ingRepo.DeleteIngredient(IngId);
+                return Ok("delete succses");
+            }
+            catch
+            {
+                return BadRequest("Not Found ID");
+            }
+        }
     }
 }

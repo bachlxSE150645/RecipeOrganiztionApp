@@ -13,6 +13,6 @@ namespace Repository.Interfaces
         Ingredient GetIngredientsById(Guid id);
         Task<Ingredient> AddIngredient(string ingredientName);
         void UpdateIngredient(Ingredient Ingredient);
-        void DeleteIngredient(Ingredient Ingredient);
+        void DeleteIngredient(Guid Ingredient);
     }
 }

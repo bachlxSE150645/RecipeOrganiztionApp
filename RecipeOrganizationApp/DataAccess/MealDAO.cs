@@ -38,7 +38,7 @@ namespace DataAccess
                 meal = this._context.Meals
                     .Include(c => c.Account)
                     .Include(c => c.Recipe)
-                    .Where(x => x.Recipe.RecipeName.Contains(mealName))
+                    .Where(x => x.Recipe.RecipeName.Contains(mealName) && x.Status.Equals("onsale"))
                     .ToList();
             }
             catch (Exception ex)
@@ -58,7 +58,7 @@ namespace DataAccess
                 meal = _context.Meals
                     .Include(c => c.Account)
                     .Include(c => c.Recipe)
-                    .Where(x => x.MealID.Equals(id)).SingleOrDefault();
+                    .Where(x => x.MealID.Equals(id) && x.Status.Equals("onsale")).SingleOrDefault();
 
             }
             catch (Exception ex)
@@ -80,7 +80,7 @@ namespace DataAccess
                     RecipeID = meal.RecipeID,
                     Price = meal.Price,
                     Description = meal.Description,
-                    Status = "On Sale",
+                    Status = "onsale",
                     Account = _context.Accounts.SingleOrDefault(c => c.AccountID == meal.AccountID),
                     Recipe = _context.Recipes.SingleOrDefault(c => c.RecipeID == meal.RecipeID)
                 };
@@ -95,7 +95,7 @@ namespace DataAccess
         }
 
         //Put existing Meal
-        public Meal UpdateMeal(Guid mealID, decimal mealPrice, string mealDescription)
+        public Meal UpdateMeal(Guid mealID, decimal mealPrice, string mealDescription, bool saleornot)
         {
             try
             {
@@ -104,6 +104,10 @@ namespace DataAccess
                 {
                     Meal.Price = mealPrice;
                     Meal.Description = mealDescription;
+                    if(saleornot == true)
+                    {
+                        Meal.Status = "onsale";
+                    }
 
                     _context.Entry<Meal>(Meal).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     _context.SaveChanges();
@@ -122,10 +126,11 @@ namespace DataAccess
             try
             {
                 bool check = false;
-                var Meal = _context.Meals.SingleOrDefault(x => x.MealID.Equals(mealID));
-                if (Meal != null)
+                var Meals = _context.Meals.SingleOrDefault(x => x.MealID.Equals(mealID));
+                if (Meals != null)
                 {
-                    _context.Meals.Remove(Meal);
+                    Meals.Status = "saleout";
+                    _context.Meals.Update(Meals);
                     _context.SaveChanges();
                     check = true;
                 }

@@ -148,7 +148,7 @@ namespace BusinessObjects
                 entity.Property(e => e.RecipeID).HasColumnName("RecipeID");
 
                 entity.HasOne(d => d.Account).WithMany(p => p.Reviews).HasForeignKey(d => d.AccountID);
-
+                entity.HasOne(d => d.Recipe).WithMany(p => p.Reviews).HasForeignKey(d => d.RecipeID).OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<Role>(entity =>

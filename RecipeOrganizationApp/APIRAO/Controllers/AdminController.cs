@@ -82,17 +82,17 @@ namespace APIRAO.Controllers
 
         }
         [HttpDelete("AccountId")]
-        public IActionResult DeleteAccount(Account acc)
+        public IActionResult DeleteAccount(Guid AccountID)
         {
             try
             {
-                var accID = accRepo.GetAccountsById(acc.AccountID);
+                var accID = accRepo.GetAccountsById(AccountID);
                 if (accID == null)
                 {
                     return NotFound();
                 }
-                acc.Status = false;
-                accRepo.UpdateAccount(acc);
+                accID.Status = false;
+                accRepo.UpdateAccount(accID);
                 return NoContent();
             }
             catch (Exception ex)

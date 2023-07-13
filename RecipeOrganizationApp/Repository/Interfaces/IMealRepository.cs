@@ -15,7 +15,7 @@ namespace Repository.Interfaces
         List<Meal> GetMealsByName(string recipeName);
 
         Meal AddMeal(MealData inf);
-        Meal UpdateMeal(Guid mealID, decimal mealPrice, string mealDescription);
+        Meal UpdateMeal(Guid mealID, decimal mealPrice, string mealDescription, bool saleornot);
 
         bool DeleteMeal(Guid mealID);
     }

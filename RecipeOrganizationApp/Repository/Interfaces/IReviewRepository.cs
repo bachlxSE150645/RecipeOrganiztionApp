@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.MapData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,13 @@ namespace Repository.Interfaces
 {
     public interface IReviewRepository
     {
-        void AddReview(Review review);
-        void UpdateReview(Review review);
-        void DeleteReview(Review review);
+        List<Review> GetAllReview();
+        Review GetReviewById(Guid reviewID);
+        List<Review> GetReviewByRecipe(Guid recipe);
+
+        Review AddReview(ReviewData review);
+        Review UpdateReview(Guid ReviewId, string? newContent,float rating);
+
+        bool DeleteReview(Guid reviewID);
     }
 }

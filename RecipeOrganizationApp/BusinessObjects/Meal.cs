@@ -19,6 +19,7 @@ namespace BusinessObjects
         public string? Description { get; set; }
         [Required][MaxLength(10)] public string Status { get; set; }
         public virtual Account Account { get; set; } = null!;
+
         [JsonIgnore]
         public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
         public virtual Recipe Recipe { get; set; } = null!;

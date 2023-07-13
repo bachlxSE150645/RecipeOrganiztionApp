@@ -70,9 +70,9 @@ namespace APIRAO.Controllers
         }
 
         [HttpPut("{mealid}")]
-        public async Task<IActionResult> Updatemeal(Guid mealid, decimal mealPrice, string mealDescription)
+        public async Task<IActionResult> Updatemeal(Guid mealid, decimal mealPrice, string mealDescription, bool saleornot)
         {
-            var result = mealRepo.UpdateMeal(mealid, mealPrice, mealDescription);
+            var result = mealRepo.UpdateMeal(mealid, mealPrice, mealDescription, saleornot);
             if (result == null)
             {
                 return BadRequest(result);
