@@ -73,20 +73,39 @@ namespace DataAccess
         {
             try
             {
-                var mealAdd = new Meal
+                var mealCheck = _context.Meals.SingleOrDefault(x => x.AccountID == meal.AccountID && x.RecipeID == meal.RecipeID);
+                if(mealCheck == null)
                 {
-                    MealID = Guid.NewGuid(),
-                    AccountID = meal.AccountID,
-                    RecipeID = meal.RecipeID,
-                    Price = meal.Price,
-                    Description = meal.Description,
-                    Status = "onsale",
-                    Account = _context.Accounts.SingleOrDefault(c => c.AccountID == meal.AccountID),
-                    Recipe = _context.Recipes.SingleOrDefault(c => c.RecipeID == meal.RecipeID)
-                };
-                _context.Meals.Add(mealAdd);
-                _context.SaveChanges();
-                return mealAdd;
+                    var mealAdd = new Meal
+                    {
+                        MealID = Guid.NewGuid(),
+                        AccountID = meal.AccountID,
+                        RecipeID = meal.RecipeID,
+                        Price = meal.Price,
+                        Description = meal.Description,
+                        Status = "onsale",
+                        Account = _context.Accounts.SingleOrDefault(c => c.AccountID == meal.AccountID),
+                        Recipe = _context.Recipes.SingleOrDefault(c => c.RecipeID == meal.RecipeID)
+                    };
+                    _context.Meals.Add(mealAdd);
+                    _context.SaveChanges();
+                    return mealAdd;
+                }
+                else
+                {
+                    if(mealCheck.Status == "onsale")
+                    {
+                        return null;
+                    } else if(mealCheck.Status == "saleout")
+                    {
+                        UpdateMeal(mealCheck.MealID, (decimal)mealCheck.Price, mealCheck.Description, true);
+                        return mealCheck;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
             }
             catch (Exception ex)
             {
