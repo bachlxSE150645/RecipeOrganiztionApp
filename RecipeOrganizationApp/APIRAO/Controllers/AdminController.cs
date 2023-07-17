@@ -1,10 +1,12 @@
-﻿using BusinessObjects;
+﻿using AutoMapper;
+using BusinessObjects;
 using DataAccess;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.EntityFrameworkCore;
 using Repository;
+using Repository.DTOs.Account;
 using Repository.Interfaces;
 
 namespace APIRAO.Controllers
@@ -14,18 +16,22 @@ namespace APIRAO.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IAccountRepository accRepo;
+        private readonly IMapper _mapper;
 
-        public AdminController(IAccountRepository accountRepository)
+        public AdminController(IAccountRepository accountRepository, IMapper mapper)
         {
             accRepo = accountRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAccounts(string? searchString, int pageIndex = 1)
+        public async Task<ActionResult<List<Account>>> GetAccounts(string? searchString, int pageIndex = 1)
         {
             try
             {
-                return Ok(accRepo.GetAccounts(searchString, pageIndex));
+                var dto = await accRepo.GetAccounts(searchString, pageIndex);
+                var account = _mapper.Map<List<AccountDTO>>(dto);
+                return Ok(account);
             }
             catch
             {

@@ -1,7 +1,6 @@
 ﻿using APIRAO.Lib;
 using AutoMapper;
 using BusinessObjects;
-using BusinessObjects.DTO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
@@ -11,7 +10,8 @@ namespace DataAccess
     {
         private readonly AppDBContext _context;
 
-        private PaginatedList<AccountDTO> items;
+        private PaginatedList<AccountDAO> items;
+        
         private readonly int pageSize = 10;
         public AccountDAO(AppDBContext context)
         {
@@ -21,12 +21,13 @@ namespace DataAccess
         }
 
         //Get All Accounts
-        public async Task<List<Account>> GetAccounts(string searchString, int? pageIndex)
+        public async Task<List<Account>> GetAccounts(string searchString,  int? pageIndex)
         {
-            if (searchString != null)
+            if(searchString != null)
             {
                 pageIndex = 1;
             }
+            
             IQueryable<Account> accountIQ = from a in _context.Accounts
                                             select a;
             if (!String.IsNullOrEmpty(searchString))
