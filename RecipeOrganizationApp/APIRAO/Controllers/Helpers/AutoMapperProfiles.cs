@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BusinessObjects;
 using Repository.DTOs.Account;
 using Repository.DTOs.Recipe;

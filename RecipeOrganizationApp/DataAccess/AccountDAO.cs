@@ -131,7 +131,8 @@ namespace DataAccess
                 var acc = _context.Accounts.SingleOrDefault(x => x.AccountID.Equals(account.AccountID));
                 if (acc != null)
                 {
-                    _context.Accounts.Remove(acc);
+                    acc.Status = false;
+                    _context.Accounts.Update(acc);
                     _context.SaveChanges();
                     return true;
                 }

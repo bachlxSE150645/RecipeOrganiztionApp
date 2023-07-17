@@ -19,15 +19,15 @@ namespace APIRAO.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMeals(string? recipeName = "")
+        public async Task<IActionResult> GetMeals(string? mealName = "")
         {
-            if (string.IsNullOrWhiteSpace(recipeName))
+            if (string.IsNullOrWhiteSpace(mealName))
             {
                 return Ok(mealRepo.GetAllMeals());
             }
             else
             {
-                List<Meal> meal = mealRepo.GetMealsByName(recipeName);
+                List<Meal> meal = mealRepo.GetMealsByName(mealName);
                 return Ok(await Task.FromResult(meal));
             }
         }
@@ -70,9 +70,9 @@ namespace APIRAO.Controllers
         }
 
         [HttpPut("{mealid}")]
-        public async Task<IActionResult> Updatemeal(Guid mealid, decimal mealPrice, string mealDescription)
+        public async Task<IActionResult> Updatemeal(Guid mealid, decimal mealPrice, string mealDescription, bool saleornot)
         {
-            var result = mealRepo.UpdateMeal(mealid, mealPrice, mealDescription);
+            var result = mealRepo.UpdateMeal(mealid, mealPrice, mealDescription, saleornot);
             if (result == null)
             {
                 return BadRequest(result);

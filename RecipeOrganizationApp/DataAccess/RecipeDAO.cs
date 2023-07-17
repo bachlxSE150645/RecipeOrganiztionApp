@@ -137,7 +137,8 @@ namespace DataAccess
                 var recipeCheck = this._context.Recipes.SingleOrDefault(x => x.RecipeID.Equals(recipe.RecipeID));
                 if (recipeCheck != null)
                 {
-                    this._context.Recipes.Remove(recipeCheck);
+                    recipeCheck.Status = "removed";
+                    this._context.Recipes.Update(recipeCheck);
                     this._context.SaveChanges();
                 }
             }
