@@ -105,8 +105,8 @@ namespace DataAccess
                 var orderCheck = _context.Orders.SingleOrDefault(x => x.OrderID.Equals(order.OrderID));
                 if (orderCheck != null)
                 {
-                    _context.Orders.Remove(orderCheck);
-                    _context.SaveChanges();
+                    orderCheck.Status = "Deny";
+                    UpdateOrder(orderCheck);
                 }
             }
             catch (Exception ex)
