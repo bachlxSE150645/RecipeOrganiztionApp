@@ -22,6 +22,7 @@ namespace DataAccess
                 listRecipes = this._context.Recipes
                     .Include(c => c.Account)
                     .Include(c => c.Account.Role)
+                    .Where(x =>x.Status.Contains("confirm"))
                     .ToList();
             }
             catch (Exception ex)
