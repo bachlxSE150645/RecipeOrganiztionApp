@@ -22,6 +22,7 @@ namespace DataAccess
                 listRecipes = this._context.Recipes
                     .Include(c => c.Account)
                     .Include(c => c.Account.Role)
+                    .Where(x =>x.Status.Contains("confirm"))
                     .ToList();
             }
             catch (Exception ex)
@@ -30,6 +31,7 @@ namespace DataAccess
             }
             return listRecipes;
         }
+        
         //Get Recipe matches RecipeID
         public Recipe GetRecipesById(Guid id)
         {
@@ -146,6 +148,22 @@ namespace DataAccess
             {
                 throw new Exception(ex.Message);
             }
+        }
+        public List<Recipe> GetAllRecipeWattingByUser(string status)
+        {
+            var recipe = new List<Recipe>();
+            try
+            {
+                 recipe = this._context.Recipes
+                    .Include(c => c.Account)
+                    .Include(c => c.Account.Role)
+                    .Where(x =>x.Status.Contains(status)).ToList();
+
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return recipe;
         }
     }
 }
