@@ -20,7 +20,8 @@ namespace Repository
         private readonly OrderDAO dao;
 
         public List<Order> GetOrders() => dao.GetOrders();
-        public Order GetOrdersById(string id) => dao.GetOrdersById(id);
+        public Order GetOrdersById(Guid id) => dao.GetOrdersById(id);
+        public List<Order> GetOrdersByUserId(Guid id) => dao.GetOrdersByUserId(id);
         public Task<Order> AddOrder(OrderData order) => dao.AddOrder(order);
         public void UpdateOrder(Order order) => dao.UpdateOrder(order);
         public void DeleteOrder(Order order) => dao.DeleteOrder(order);

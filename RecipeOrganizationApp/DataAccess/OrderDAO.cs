@@ -1,6 +1,7 @@
 ﻿using BusinessObjects;
 using BusinessObjects.MapData;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 
 namespace DataAccess
 {
@@ -27,15 +28,27 @@ namespace DataAccess
         }
 
         //Get Order matches OrderID
-        public Order GetOrdersById(string id)
+        public Order GetOrdersById(Guid id)
         {
             try
             {
-                return _context.Orders.SingleOrDefault(x => x.OrderID.ToString().Equals(id));
+                return _context.Orders.SingleOrDefault(x => x.OrderID.Equals(id));
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+        }
+
+        //Get Order matches UserID
+        public List<Order> GetOrdersByUserId(Guid id)
+        {
+            try
+            {
+                return _context.Orders.Where(x=>x.AccountID.Equals(id)).OrderBy(x=>x.CreateDate).ToList();
+            } catch(Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
 
@@ -92,8 +105,8 @@ namespace DataAccess
                 var orderCheck = _context.Orders.SingleOrDefault(x => x.OrderID.Equals(order.OrderID));
                 if (orderCheck != null)
                 {
-                    _context.Orders.Remove(orderCheck);
-                    _context.SaveChanges();
+                    orderCheck.Status = "Deny";
+                    UpdateOrder(orderCheck);
                 }
             }
             catch (Exception ex)

@@ -1,6 +1,5 @@
-﻿using BusinessObjects.MapData;
-using DataAccess;
-using Microsoft.AspNetCore.Http;
+﻿using BusinessObjects;
+using BusinessObjects.MapData;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Interfaces;
 
@@ -11,10 +10,12 @@ namespace APIRAO.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository orderRepo;
+        private readonly IMealRepository mealRepo;
 
-        public OrderController(IOrderRepository _orderRepository)
+        public OrderController(IOrderRepository _orderRepository, IMealRepository _mealRepository)
         {
             this.orderRepo = _orderRepository;
+            this.mealRepo = _mealRepository;
         }
 
         [HttpGet]
@@ -35,7 +36,20 @@ namespace APIRAO.Controllers
         {
             try
             {
-                return Ok(orderRepo.GetOrdersById(OrderId.ToString()));
+                return Ok(orderRepo.GetOrdersById(OrderId));
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("User/{UserId}")]
+        public async Task<IActionResult> GetOrderByUserID(Guid UserId)
+        {
+            try
+            {
+                return Ok(orderRepo.GetOrdersByUserId(UserId));
             }
             catch
             {
@@ -54,27 +68,39 @@ namespace APIRAO.Controllers
             return Ok(result);
         }
 
-        //[HttpDelete("{MealId}")]
-        //public async Task<IActionResult> DeleteMeal(Guid MealId)
-        //{
-        //    var rs = mealRepo.DeleteMeal(MealId);
-        //    if (rs == null)
-        //    {
-        //        return BadRequest(rs);
-        //    }
+        [HttpDelete("{OrderId}")]
+        public async Task<IActionResult> DeleteOrder(Guid OrderId)
+        {
+            var rs = orderRepo.GetOrdersById(OrderId);
+            if (rs == null)
+            {
+                return BadRequest(rs);
+            }
+            else
+            {
+                orderRepo.DeleteOrder(rs);
+                return Ok();
+            }
+        }
 
-        //    return Ok(rs);
-        //}
-
-        //[HttpPut("{mealid}")]
-        //public async Task<IActionResult> Updatemeal(Guid mealid, decimal mealPrice, string mealDescription)
-        //{
-        //    var result = mealRepo.UpdateMeal(mealid, mealPrice, mealDescription);
-        //    if (result == null)
-        //    {
-        //        return BadRequest(result);
-        //    }
-        //    return Ok(result);
-        //}
+        [HttpPut("{OrderId}")]
+        public async Task<IActionResult> UpdateOrder(Guid OrderId, OrderData inf)
+        {
+            var rs = orderRepo.GetOrdersById(OrderId);
+            if (rs == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                var meal = mealRepo.GetMealsById(rs.MealID);
+                rs.CreateDate = DateTime.Now;
+                rs.Quantity = inf.Quantity;
+                rs.TotalPrice = inf.Quantity * meal.Price;
+                rs.Detail = inf.Detail;
+                orderRepo.UpdateOrder(rs);
+                return Ok(rs);
+            }
+        }
     }
 }
