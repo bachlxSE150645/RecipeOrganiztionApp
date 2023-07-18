@@ -43,6 +43,19 @@ namespace APIRAO.Controllers
             }
         }
 
+        [HttpGet("User/{UserId}")]
+        public async Task<IActionResult> GetOrderByUserID(Guid UserId)
+        {
+            try
+            {
+                return Ok(orderRepo.GetOrdersByUserId(UserId.ToString()));
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> PostOrder(OrderData inf)
         {

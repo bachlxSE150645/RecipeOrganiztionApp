@@ -1,6 +1,7 @@
 ﻿using BusinessObjects;
 using BusinessObjects.MapData;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 
 namespace DataAccess
 {
@@ -36,6 +37,18 @@ namespace DataAccess
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+        }
+
+        //Get Order matches UserID
+        public List<Order> GetOrdersByUserId(string id)
+        {
+            try
+            {
+                return _context.Orders.Where(x=>x.AccountID.ToString().Equals(id)).OrderBy(x=>x.CreateDate).ToList();
+            } catch(Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
 
