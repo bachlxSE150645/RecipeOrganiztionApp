@@ -49,7 +49,7 @@ namespace APIRAO.Controllers
             try
             {
                 var recipe = recipeRepo.GetRecipesById(RecipeId);
-                var meal = mealRepo.GetMealByRecipeId(RecipeId);
+                var meal = mealRepo.GetMealsById(RecipeId);
                 if (meal != null)
                 {
                     var recipeMeal = _mapper.Map<RecipeMealDTO>(meal);
@@ -137,6 +137,13 @@ namespace APIRAO.Controllers
                 return BadRequest(result);
             }
             return Ok(result);
+        }
+        [HttpGet("{status}/StatusOrder(watting,removed...)")]
+        public async Task<IActionResult>GetAllRecipeWattingByUser(string status)
+        {
+                List<Recipe> recipes= recipeRepo.GetAllRecipeWattingByUser(status);
+                return Ok( Task.FromResult(recipes));
+  
         }
     }
 }

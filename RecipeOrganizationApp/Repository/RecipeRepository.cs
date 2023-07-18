@@ -69,5 +69,15 @@ namespace Repository
 
         public void UpdateContributerApprove(Recipe recipe) => dao.UpdateContributerApprove(recipe);
 
+        public List<Recipe> GetAllRecipeWattingByUser(string status)
+        {
+            List<Recipe> recipes = this.dao.GetAllRecipeWattingByUser(status);
+
+            foreach (Recipe recipe in recipes)
+            {
+                recipe.RecipeDetails = detailDAO.GetRecipeDetailsByRecipeId(recipe.RecipeID);
+            }
+            return recipes;
+        }
     }
 }

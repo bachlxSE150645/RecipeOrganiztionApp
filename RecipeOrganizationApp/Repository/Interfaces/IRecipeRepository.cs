@@ -12,5 +12,6 @@ namespace Repository.Interfaces
         Task<Recipe> UpdateRecipe(Guid id, UpdateRecipeDTO recipe);
         void DeleteRecipe(Recipe recipe);
         void UpdateContributerApprove(Recipe recipe);
+        List<Recipe>GetAllRecipeWattingByUser(string status);
     }
 }
