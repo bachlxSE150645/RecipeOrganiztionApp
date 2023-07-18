@@ -28,11 +28,11 @@ namespace DataAccess
         }
 
         //Get Order matches OrderID
-        public Order GetOrdersById(string id)
+        public Order GetOrdersById(Guid id)
         {
             try
             {
-                return _context.Orders.SingleOrDefault(x => x.OrderID.ToString().Equals(id));
+                return _context.Orders.SingleOrDefault(x => x.OrderID.Equals(id));
             }
             catch (Exception ex)
             {
@@ -41,11 +41,11 @@ namespace DataAccess
         }
 
         //Get Order matches UserID
-        public List<Order> GetOrdersByUserId(string id)
+        public List<Order> GetOrdersByUserId(Guid id)
         {
             try
             {
-                return _context.Orders.Where(x=>x.AccountID.ToString().Equals(id)).OrderBy(x=>x.CreateDate).ToList();
+                return _context.Orders.Where(x=>x.AccountID.Equals(id)).OrderBy(x=>x.CreateDate).ToList();
             } catch(Exception e)
             {
                 throw new Exception(e.Message);
