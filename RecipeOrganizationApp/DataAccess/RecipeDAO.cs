@@ -37,7 +37,7 @@ namespace DataAccess
             var recipe = new Recipe();
             try
             {
-                recipe = this._context.Recipes.Where(x => x.RecipeID.Equals(id)).Include(c => c.Account).SingleOrDefault();
+                recipe = this._context.Recipes.Where(x => x.RecipeID.Equals(id)).Include(c => c.Account).Include(r => r.Reviews).ThenInclude(review => review.Account).SingleOrDefault();
             }
             catch (Exception ex)
             {
