@@ -69,7 +69,7 @@ namespace DataAccess
         {
             try
             {
-                return _context.Accounts.FirstOrDefault(x => x.Email.Equals(email) && x.Password.Equals(password));
+                return _context.Accounts.Include(a => a.Role).FirstOrDefault(x => x.Email.Equals(email) && x.Password.Equals(password));
             }
             catch (Exception ex)
             {
