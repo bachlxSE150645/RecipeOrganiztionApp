@@ -45,7 +45,7 @@ namespace DataAccess
         {
             try
             {
-                return _context.Orders.Where(x=>x.AccountID.Equals(id)).OrderBy(x=>x.CreateDate).ToList();
+                return _context.Orders.Where(x=>x.AccountID.Equals(id)).Include(od => od.Meal).ThenInclude(meal => meal.Recipe).OrderBy(x=>x.CreateDate).ToList();
             } catch(Exception e)
             {
                 throw new Exception(e.Message);
