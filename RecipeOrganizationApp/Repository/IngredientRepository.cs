@@ -19,6 +19,8 @@ namespace Repository
         private readonly IngredientDAO dao;
 
         public List<Ingredient> GetIngredients() => dao.GetIngredients();
+        public List<Ingredient> GetIngredientsForMod() => dao.GetIngredientsForMode();
+
         public Ingredient GetIngredientsById(Guid id) => dao.GetIngredientsById(id);
         public Task<Ingredient> AddIngredient(string ingredientName) => dao.AddIngredient(ingredientName);
         public void UpdateIngredient(Ingredient Ingredient) => dao.UpdateIngredient(Ingredient);

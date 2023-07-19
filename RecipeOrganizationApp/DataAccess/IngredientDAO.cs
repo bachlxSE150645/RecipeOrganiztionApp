@@ -14,9 +14,26 @@ namespace DataAccess
         //Get All Ingredients
         public List<Ingredient> GetIngredients()
         {
+            
             try
             {
-                return _context.Ingredients.Where(x => x.Status == true).ToList();
+                List<Ingredient> ingredientList = new List<Ingredient>();
+                ingredientList = this._context.Ingredients
+                   .Where(x => x.Status.Equals(true)).ToList();
+                return ingredientList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public List<Ingredient> GetIngredientsForMode()
+        {
+            try
+            {
+                List<Ingredient> ingredientList = new List<Ingredient>();
+                ingredientList = this._context.Ingredients.ToList();
+                return ingredientList;
             }
             catch (Exception ex)
             {
