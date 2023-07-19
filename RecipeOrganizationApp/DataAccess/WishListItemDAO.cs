@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BusinessObjects;
 using BusinessObjects.MapData;
+using Microsoft.Identity.Client;
 
 namespace DataAccess
 {
@@ -15,25 +16,17 @@ namespace DataAccess
             _context = context;
         }
 
-        //Get All Wish List Items
-        public List<WishListItem> GetWishListItems()
-        {
-            try
-            {
-                return _context.WishListItems.ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
         //Get Wish List Items by Wish List ID
-        public List<WishListItem> GetWishListItemsByWishListId(string wishListId)
+        public List<WishListItem> GetWishListByAccountID(Guid accountID)
         {
             try
             {
-                return _context.WishListItems.Where(x => x.WishListID == Guid.Parse(wishListId)).ToList();
+                var id = _context.WishLists.Where(c => c.AccountID == accountID).FirstOrDefault();
+                if (id != null)
+                {
+                    return _context.WishListItems.Where(x => x.WishListID == id.WishListID).ToList();
+                }
+                return new List<WishListItem>();
             }
             catch (Exception ex)
             {
@@ -41,43 +34,33 @@ namespace DataAccess
             }
         }
 
-        //Get Wish List Items by Recipe ID
-        public List<WishListItem> GetWishListItemsByRecipeId(string recipeId)
-        {
-            try
-            {
-                return _context.WishListItems.Where(x => x.RecipeID == Guid.Parse(recipeId)).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        //Get Wish List Item by Recipe ID and Wish List ID
-        public WishListItem GetWishListItemsByRecIdAndWSLId(string recId, string WSLId)
-        {
-            try
-            {
-                return _context.WishListItems.SingleOrDefault(x => x.RecipeID == Guid.Parse(recId) && x.WishListID == Guid.Parse(WSLId));
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
 
         //Post new WishListItem
-        public void AddWishListItem(WishListItem wishListItem)
+        public bool addWishListItem(WishListItemData inf)
         {
             try
             {
-                var wishList = _context.WishLists.SingleOrDefault(x => x.WishListID == wishListItem.WishListID);
-                var recipe = _context.Recipes.SingleOrDefault(x => x.RecipeID == wishListItem.RecipeID);
+                var id = _context.WishLists.Where(c => c.AccountID == inf.AccountID).FirstOrDefault();
+                var wishList = _context.WishLists.SingleOrDefault(x => x.WishListID == id.WishListID);
+                var recipe = _context.Recipes.SingleOrDefault(x => x.RecipeID == inf.RecipeID);
+
                 if (wishList != null && recipe != null)
                 {
-                    _context.WishListItems.Add(wishListItem);
+                    var newItem = new WishListItem
+                    {
+                        WishListID = wishList.WishListID,
+                        RecipeID = inf.RecipeID,
+                        Recipe = recipe,
+                        WishList = wishList
+                    };
+
+                    _context.WishListItems.Add(newItem);
                     _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
             catch (Exception ex)
@@ -87,15 +70,24 @@ namespace DataAccess
         }
 
         //Delete existing WishListItem
-        public void DeleteWishListItem(WishListItem wishListItem)
+        public bool removeWishListItem(WishListItemData inf)
         {
             try
             {
-                var wishListItemCheck = _context.WishListItems.SingleOrDefault(x => x.RecipeID == wishListItem.RecipeID && x.WishListID == wishListItem.WishListID);
-                if (wishListItemCheck != null)
+                var id = _context.WishLists.Where(c => c.AccountID == inf.AccountID).FirstOrDefault();
+                var wishList = _context.WishLists.SingleOrDefault(x => x.WishListID == id.WishListID);
+                var recipe = _context.Recipes.SingleOrDefault(x => x.RecipeID == inf.RecipeID);
+
+                if (wishList != null && recipe != null)
                 {
-                    _context.WishListItems.Remove(wishListItemCheck);
+                    var item = _context.WishListItems.Where(c => c.WishListID == wishList.WishListID && c.RecipeID == inf.RecipeID).FirstOrDefault();
+                    _context.WishListItems.Remove(item);
                     _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
             catch (Exception ex)

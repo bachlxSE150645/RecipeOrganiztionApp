@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.MapData;
 using DataAccess;
 using Repository.Interfaces;
 using System;
@@ -18,11 +19,9 @@ namespace Repository
 
         private readonly WishListItemDAO dao;
 
-        public List<WishListItem> GetWishListItems() => dao.GetWishListItems();
-        public List<WishListItem> GetWishListItemsByWishListId(string wishListId) => dao.GetWishListItemsByWishListId(wishListId);
-        public List<WishListItem> GetWishListItemsByRecipeId(string recipeId) => dao.GetWishListItemsByRecipeId(recipeId);
-        public WishListItem GetWishListItemsByRecIdAndWSLId(string recId, string WSLId) => dao.GetWishListItemsByRecIdAndWSLId(recId, WSLId);
-        public void AddWishListItem(WishListItem wishListItem) => dao.AddWishListItem(wishListItem);
-        public void DeleteWishListItem(WishListItem wishListItem) => dao.DeleteWishListItem(wishListItem);
+        public bool addWishListItem(WishListItemData inf) => dao.addWishListItem(inf);
+        public bool removeWishListItem(WishListItemData inf) => dao.removeWishListItem(inf);
+        public List<WishListItem> GetWishListByAccountID(Guid accountID) => dao.GetWishListByAccountID(accountID);
+
     }
 }

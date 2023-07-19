@@ -9,9 +9,6 @@ namespace Repository.Interfaces
 {
     public interface IWishListRepository
     {
-        WishList GetWishListById(string id);
-        void AddWishList(WishList wishlist);
-        void UpdateWishList(WishList wishList);
-        void DeleteWishList(WishList wishList);
+        public void newWishList(Guid accID);
     }
 }

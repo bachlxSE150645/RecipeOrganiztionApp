@@ -13,10 +13,12 @@ namespace APIRAO.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountRepository accRepo;
+        private readonly IWishListRepository wishListRepo;
 
-        public AccountController(IAccountRepository _accountRepository)
+        public AccountController(IAccountRepository _accountRepository, IWishListRepository _wishListRepo)
         {
             this.accRepo = _accountRepository;
+            this.wishListRepo = _wishListRepo;
         }
 
 
@@ -40,6 +42,10 @@ namespace APIRAO.Controllers
             if (result == null)
             {
                 return BadRequest("Something wrong!");
+            }
+            else
+            {
+                wishListRepo.newWishList(result.AccountID);
             }
 
             return Ok(result);

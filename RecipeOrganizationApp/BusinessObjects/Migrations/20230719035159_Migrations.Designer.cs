@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20230701081839_Migrations")]
+    [Migration("20230719035159_Migrations")]
     partial class Migrations
     {
         /// <inheritdoc />
@@ -28,8 +28,8 @@ namespace BusinessObjects.Migrations
             modelBuilder.Entity("BusinessObjects.Account", b =>
                 {
                     b.Property<Guid>("AccountID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("AccountID");
 
                     b.Property<string>("Email")
                         .HasMaxLength(50)
@@ -44,7 +44,8 @@ namespace BusinessObjects.Migrations
                         .HasColumnType("nvarchar(15)");
 
                     b.Property<Guid>("RoleID")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("RoleID");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
@@ -55,7 +56,7 @@ namespace BusinessObjects.Migrations
 
                     b.HasKey("AccountID");
 
-                    b.HasIndex("RoleID");
+                    b.HasIndex(new[] { "RoleID" }, "IX_Accounts_RoleID");
 
                     b.ToTable("Accounts");
                 });
@@ -63,8 +64,8 @@ namespace BusinessObjects.Migrations
             modelBuilder.Entity("BusinessObjects.Ingredient", b =>
                 {
                     b.Property<Guid>("IngredientID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("IngredientID");
 
                     b.Property<string>("IngredientName")
                         .HasColumnType("nvarchar(max)");
@@ -80,11 +81,12 @@ namespace BusinessObjects.Migrations
             modelBuilder.Entity("BusinessObjects.Meal", b =>
                 {
                     b.Property<Guid>("MealID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("MealID");
 
                     b.Property<Guid>("AccountID")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("AccountID");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -93,7 +95,8 @@ namespace BusinessObjects.Migrations
                         .HasColumnType("money");
 
                     b.Property<Guid>("RecipeID")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("RecipeID");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -102,9 +105,9 @@ namespace BusinessObjects.Migrations
 
                     b.HasKey("MealID");
 
-                    b.HasIndex("AccountID");
+                    b.HasIndex(new[] { "AccountID" }, "IX_Meals_AccountID");
 
-                    b.HasIndex("RecipeID");
+                    b.HasIndex(new[] { "RecipeID" }, "IX_Meals_RecipeID");
 
                     b.ToTable("Meals");
                 });
@@ -112,11 +115,12 @@ namespace BusinessObjects.Migrations
             modelBuilder.Entity("BusinessObjects.Order", b =>
                 {
                     b.Property<Guid>("OrderID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("OrderID");
 
                     b.Property<Guid>("AccountID")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("AccountID");
 
                     b.Property<DateTime?>("CreateDate")
                         .HasColumnType("datetime2");
@@ -125,7 +129,8 @@ namespace BusinessObjects.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("MealID")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("MealID");
 
                     b.Property<int?>("Quantity")
                         .HasColumnType("int");
@@ -140,9 +145,9 @@ namespace BusinessObjects.Migrations
 
                     b.HasKey("OrderID");
 
-                    b.HasIndex("AccountID");
+                    b.HasIndex(new[] { "AccountID" }, "IX_Orders_AccountID");
 
-                    b.HasIndex("MealID");
+                    b.HasIndex(new[] { "MealID" }, "IX_Orders_MealID");
 
                     b.ToTable("Orders");
                 });
@@ -150,11 +155,12 @@ namespace BusinessObjects.Migrations
             modelBuilder.Entity("BusinessObjects.Recipe", b =>
                 {
                     b.Property<Guid>("RecipeID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("RecipeID");
 
                     b.Property<Guid>("AccountID")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("AccountID");
 
                     b.Property<DateTime?>("CreateDate")
                         .HasColumnType("datetime2");
@@ -175,29 +181,33 @@ namespace BusinessObjects.Migrations
 
                     b.HasKey("RecipeID");
 
-                    b.HasIndex("AccountID");
+                    b.HasIndex(new[] { "AccountID" }, "IX_Recipes_AccountID");
 
                     b.ToTable("Recipes");
                 });
 
             modelBuilder.Entity("BusinessObjects.RecipeDetail", b =>
                 {
+                    b.Property<Guid>("RecipeID")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("RecipeID");
+
                     b.Property<Guid>("IngredientID")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("IngredientID");
 
                     b.Property<int?>("Quantity")
                         .HasColumnType("int");
-
-                    b.Property<Guid>("RecipeID")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Unit")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.HasIndex("IngredientID");
+                    b.HasKey("RecipeID", "IngredientID");
 
-                    b.HasIndex("RecipeID");
+                    b.HasIndex(new[] { "IngredientID" }, "IX_RecipeDetails_IngredientID");
+
+                    b.HasIndex(new[] { "RecipeID" }, "IX_RecipeDetails_RecipeID");
 
                     b.ToTable("RecipeDetails");
                 });
@@ -205,26 +215,28 @@ namespace BusinessObjects.Migrations
             modelBuilder.Entity("BusinessObjects.Review", b =>
                 {
                     b.Property<Guid>("ReviewID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ReviewID");
 
                     b.Property<Guid>("AccountID")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("AccountID");
 
                     b.Property<float?>("Rating")
                         .HasColumnType("real");
 
                     b.Property<Guid>("RecipeID")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("RecipeID");
 
                     b.Property<string>("ReviewContent")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ReviewID");
 
-                    b.HasIndex("AccountID");
+                    b.HasIndex(new[] { "AccountID" }, "IX_Reviews_AccountID");
 
-                    b.HasIndex("RecipeID");
+                    b.HasIndex(new[] { "RecipeID" }, "IX_Reviews_RecipeID");
 
                     b.ToTable("Reviews");
                 });
@@ -232,8 +244,8 @@ namespace BusinessObjects.Migrations
             modelBuilder.Entity("BusinessObjects.Role", b =>
                 {
                     b.Property<Guid>("RoleID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("RoleID");
 
                     b.Property<string>("RoleName")
                         .HasMaxLength(10)
@@ -247,15 +259,16 @@ namespace BusinessObjects.Migrations
             modelBuilder.Entity("BusinessObjects.WishList", b =>
                 {
                     b.Property<Guid>("WishListID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("WishListID");
 
                     b.Property<Guid>("AccountID")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("AccountID");
 
                     b.HasKey("WishListID");
 
-                    b.HasIndex("AccountID");
+                    b.HasIndex(new[] { "AccountID" }, "IX_WishLists_AccountID");
 
                     b.ToTable("WishLists");
                 });
@@ -263,14 +276,18 @@ namespace BusinessObjects.Migrations
             modelBuilder.Entity("BusinessObjects.WishListItem", b =>
                 {
                     b.Property<Guid>("RecipeID")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("RecipeID");
 
                     b.Property<Guid>("WishListID")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("WishListID");
 
-                    b.HasIndex("RecipeID");
+                    b.HasKey("RecipeID", "WishListID");
 
-                    b.HasIndex("WishListID");
+                    b.HasIndex(new[] { "RecipeID" }, "IX_WishListItems_RecipeID");
+
+                    b.HasIndex(new[] { "WishListID" }, "IX_WishListItems_WishListID");
 
                     b.ToTable("WishListItems");
                 });
@@ -278,7 +295,7 @@ namespace BusinessObjects.Migrations
             modelBuilder.Entity("BusinessObjects.Account", b =>
                 {
                     b.HasOne("BusinessObjects.Role", "Role")
-                        .WithMany()
+                        .WithMany("Accounts")
                         .HasForeignKey("RoleID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -289,15 +306,14 @@ namespace BusinessObjects.Migrations
             modelBuilder.Entity("BusinessObjects.Meal", b =>
                 {
                     b.HasOne("BusinessObjects.Account", "Account")
-                        .WithMany()
+                        .WithMany("Meals")
                         .HasForeignKey("AccountID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BusinessObjects.Recipe", "Recipe")
-                        .WithMany()
+                        .WithMany("Meals")
                         .HasForeignKey("RecipeID")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Account");
@@ -308,15 +324,14 @@ namespace BusinessObjects.Migrations
             modelBuilder.Entity("BusinessObjects.Order", b =>
                 {
                     b.HasOne("BusinessObjects.Account", "Account")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("AccountID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BusinessObjects.Meal", "Meal")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("MealID")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Account");
@@ -327,7 +342,7 @@ namespace BusinessObjects.Migrations
             modelBuilder.Entity("BusinessObjects.Recipe", b =>
                 {
                     b.HasOne("BusinessObjects.Account", "Account")
-                        .WithMany()
+                        .WithMany("Recipes")
                         .HasForeignKey("AccountID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -357,15 +372,14 @@ namespace BusinessObjects.Migrations
             modelBuilder.Entity("BusinessObjects.Review", b =>
                 {
                     b.HasOne("BusinessObjects.Account", "Account")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("AccountID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BusinessObjects.Recipe", "Recipe")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("RecipeID")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Account");
@@ -376,7 +390,7 @@ namespace BusinessObjects.Migrations
             modelBuilder.Entity("BusinessObjects.WishList", b =>
                 {
                     b.HasOne("BusinessObjects.Account", "Account")
-                        .WithMany()
+                        .WithMany("WishLists")
                         .HasForeignKey("AccountID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -401,6 +415,36 @@ namespace BusinessObjects.Migrations
                     b.Navigation("Recipe");
 
                     b.Navigation("WishList");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Account", b =>
+                {
+                    b.Navigation("Meals");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("Recipes");
+
+                    b.Navigation("Reviews");
+
+                    b.Navigation("WishLists");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Meal", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Recipe", b =>
+                {
+                    b.Navigation("Meals");
+
+                    b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Role", b =>
+                {
+                    b.Navigation("Accounts");
                 });
 #pragma warning restore 612, 618
         }

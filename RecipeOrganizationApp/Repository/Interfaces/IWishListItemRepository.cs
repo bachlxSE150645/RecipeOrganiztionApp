@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.MapData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,9 @@ namespace Repository.Interfaces
 {
     public interface IWishListItemRepository
     {
-        List<WishListItem> GetWishListItems();
-        List<WishListItem> GetWishListItemsByWishListId(string wishListId);
-        List<WishListItem> GetWishListItemsByRecipeId(string recipeId);
-        WishListItem GetWishListItemsByRecIdAndWSLId(string recId, string WSLId);
-        void AddWishListItem(WishListItem wishListItem);
-        void DeleteWishListItem(WishListItem wishListItem);
+        bool addWishListItem(WishListItemData inf);
+        bool removeWishListItem(WishListItemData inf);
 
+        List<WishListItem> GetWishListByAccountID(Guid accountID);
     }
 }

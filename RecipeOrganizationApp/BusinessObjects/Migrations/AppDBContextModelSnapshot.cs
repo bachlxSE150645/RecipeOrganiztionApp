@@ -280,6 +280,8 @@ namespace BusinessObjects.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("WishListID");
 
+                    b.HasKey("RecipeID", "WishListID");
+
                     b.HasIndex(new[] { "RecipeID" }, "IX_WishListItems_RecipeID");
 
                     b.HasIndex(new[] { "WishListID" }, "IX_WishListItems_WishListID");
@@ -404,6 +406,7 @@ namespace BusinessObjects.Migrations
                     b.HasOne("BusinessObjects.WishList", "WishList")
                         .WithMany()
                         .HasForeignKey("WishListID")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Recipe");
