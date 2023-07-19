@@ -1,8 +1,11 @@
 using APIRAO.Controllers.Helpers;
 using BusinessObjects;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Repository;
 using Repository.Interfaces;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +28,24 @@ builder.Services.AddScoped<IWishListItemRepository, WishListItemRepository>();
 builder.Services.AddScoped<IWishListRepository, WishListRepository>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
-
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(o =>
+{
+    o.TokenValidationParameters = new TokenValidationParameters
+    {
+        IssuerSigningKey = new SymmetricSecurityKey
+        (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = false,
+        ValidateIssuerSigningKey = true
+    };
+});
+builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -44,7 +64,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
+app.UseAuthentication();
+
