@@ -19,7 +19,7 @@ namespace DataAccess
         {
             try
             {
-                return _context.Orders.ToList();
+                return _context.Orders.Include(od => od.Account).Include(od => od.Meal).ThenInclude(meal => meal.Recipe).ToList();
             }
             catch (Exception ex)
             {

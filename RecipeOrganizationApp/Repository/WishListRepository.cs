@@ -18,9 +18,6 @@ namespace Repository
 
         private readonly WishListDAO _context;
 
-        public WishList GetWishListById(string id) => _context.GetWishListById(id);
-        public void AddWishList(WishList wishlist) => _context.AddWishList(wishlist);
-        public void UpdateWishList(WishList wishList) => _context.UpdateWishList(wishList);
-        public void DeleteWishList(WishList wishList) => _context.DeleteWishList(wishList);
+        public void newWishList(Guid accID) => _context.newWishList(accID);
     }
 }

@@ -15,38 +15,19 @@ namespace DataAccess
             _context = context;
         }
 
-        //Get all WishLists
-        public List<WishList> GetWishLists()
-        {
-            try
-            {
-                return _context.WishLists.ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        //Get wish list by WishListID
-        public WishList GetWishListById(string id)
-        {
-            try
-            {
-                return _context.WishLists.SingleOrDefault(x => x.WishListID == Guid.Parse(id));
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
         //Post new Wish List
-        public void AddWishList(WishList wishlist)
+        public void newWishList(Guid accID)
         {
             try
             {
-                _context.WishLists.Add(wishlist);
+                var newWL = new WishList
+                {
+
+                    WishListID = Guid.NewGuid(),
+                    AccountID = accID,
+                    Account = _context.Accounts.Where(c => c.AccountID == accID).FirstOrDefault(),
+                };
+                _context.WishLists.Add(newWL);
                 _context.SaveChanges();
             }
             catch (Exception ex)
@@ -55,40 +36,5 @@ namespace DataAccess
             }
         }
 
-        //Put existing Wish List by Wish List ID
-        public void UpdateWishList(WishList wishList)
-        {
-            try
-            {
-                var wishListCheck = _context.WishLists.SingleOrDefault(x => x.WishListID == wishList.WishListID);
-                if (wishListCheck != null)
-                {
-                    _context.Entry(wishListCheck).CurrentValues.SetValues(wishList);
-                    _context.SaveChanges();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        //Delete existing wish list
-        public void DeleteWishList(WishList wishList)
-        {
-            try
-            {
-                var wishListCheck = _context.WishLists.SingleOrDefault(x => x.WishListID == wishList.WishListID);
-                if (wishListCheck != null)
-                {
-                    _context.WishLists.Remove(wishListCheck);
-                    _context.SaveChanges();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
     }
 }

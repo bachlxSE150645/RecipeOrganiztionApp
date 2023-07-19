@@ -173,7 +173,7 @@ namespace BusinessObjects
 
             modelBuilder.Entity<WishListItem>(entity =>
             {
-                entity.HasNoKey();
+                //entity.HasNoKey();
 
                 entity.HasIndex(e => e.RecipeID, "IX_WishListItems_RecipeID");
 
@@ -184,9 +184,7 @@ namespace BusinessObjects
 
                 entity.HasOne(d => d.Recipe).WithMany().HasForeignKey(d => d.RecipeID);
 
-                entity.HasOne(d => d.WishList).WithMany()
-                    .HasForeignKey(d => d.WishListID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
+                entity.HasOne(d => d.WishList).WithMany().HasForeignKey(d => d.WishListID);
             });
 
         }
