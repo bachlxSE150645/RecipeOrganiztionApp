@@ -52,6 +52,18 @@ namespace DataAccess
             }
         }
 
+        //Get Order matches MealID
+        public List<Order> GetOrdersByMealID(Guid id)
+        {
+            try
+            {
+                return _context.Orders.Where(x => x.MealID.Equals(id)).ToList();
+            } catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         //Post new Order
         public async Task<Order> AddOrder(OrderData order)
         {

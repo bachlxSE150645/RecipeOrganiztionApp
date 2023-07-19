@@ -44,7 +44,7 @@ namespace APIRAO.Controllers
             }
         }
 
-        [HttpGet("User/{UserId}")]
+        [HttpGet("User/{UserId}")] // Get All Orders that 1 user bought
         public async Task<IActionResult> GetOrderByUserID(Guid UserId)
         {
             try
@@ -57,6 +57,28 @@ namespace APIRAO.Controllers
             }
         }
 
+        [HttpGet("Owner/{OwnerId}")] // Get All Orders of 1 shop by shop owner's ID
+        public async Task<IActionResult> GetOrderByOwnerID(Guid OwnerId)
+        {
+            var mealList = mealRepo.GetMealsByAccountId(OwnerId);
+            List<Order> ordersList = new List<Order>();
+            if(mealList.Count == 0)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                foreach(var i in mealList)
+                {
+                    var orderList = orderRepo.GetOrdersByMealID(i.MealID);
+                    foreach(var j in orderList)
+                    {
+                        ordersList.Add(j);
+                    }
+                }
+                return Ok(ordersList);
+            }
+        }
         [HttpPost]
         public async Task<IActionResult> PostOrder(OrderData inf)
         {
