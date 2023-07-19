@@ -14,7 +14,7 @@ namespace Repository.Interfaces
         Meal GetMealsById(Guid id);
         List<Meal> GetMealsByName(string recipeName);
         Meal GetMealByRecipeId(Guid recipeId);
-
+        List<Meal> GetMealsByAccountId(Guid id);
         Meal AddMeal(MealData inf);
         Meal UpdateMeal(Guid mealID, decimal mealPrice, string mealDescription, bool saleornot);
 

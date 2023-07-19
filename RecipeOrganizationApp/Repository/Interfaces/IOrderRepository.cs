@@ -13,6 +13,7 @@ namespace Repository.Interfaces
         List<Order> GetOrders();
         Order GetOrdersById(Guid id);
         List<Order> GetOrdersByUserId(Guid id);
+        List<Order> GetOrdersByMealID(Guid id);
         Task<Order> AddOrder(OrderData order);
         void UpdateOrder(Order order);
         void DeleteOrder(Order order);

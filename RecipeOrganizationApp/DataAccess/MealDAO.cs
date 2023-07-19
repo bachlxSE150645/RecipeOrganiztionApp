@@ -68,6 +68,21 @@ namespace DataAccess
             return meal;
         }
 
+        //Get Meal matches AccountID
+        public List<Meal> GetMealsByAccountId(Guid id)
+        {
+            try
+            {
+                return _context.Meals
+                    .Where(x=> x.AccountID.Equals(id))
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         //Post new Meal
         public Meal AddMeal(MealData meal)
         {
