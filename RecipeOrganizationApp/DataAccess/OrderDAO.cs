@@ -72,7 +72,7 @@ namespace DataAccess
                 var meal = await _context.Meals!.FirstOrDefaultAsync(c => c.MealID.ToString().Equals(order.MealID.ToString()));
                 if (meal.AccountID.Equals(order.AccountID))
                 {
-                    throw new Exception("The meal's creator is same as the order's account id");
+                    return null;
                 }
                 else
                 {
