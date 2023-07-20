@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using Microsoft.Identity.Client;
@@ -38,6 +39,7 @@ namespace APIRAO.Controllers
                     {
                 new Claim("Id", Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.Name,account.Email),
+                new Claim(ClaimTypes.Role,account.Role.RoleName),
                 new Claim(JwtRegisteredClaimNames.Jti,
                 Guid.NewGuid().ToString())
              }),
