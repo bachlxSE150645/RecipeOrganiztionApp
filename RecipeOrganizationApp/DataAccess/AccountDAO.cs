@@ -21,20 +21,14 @@ namespace DataAccess
         }
 
         //Get All Accounts
-        public async Task<List<Account>> GetAccounts(string searchString,  int? pageIndex)
+        public async Task<List<Account>> GetAccounts(string searchString)
         {
-            if(searchString != null)
-            {
-                pageIndex = 1;
+            List<Account> accountIQ = _context.Accounts.Include(a => a.Role).ToList();
+            if (!String.IsNullOrEmpty(searchString)) {
+                accountIQ =  accountIQ.Where(a => a.UserName.Contains(searchString) || a.Email.Contains(searchString)).ToList();
             }
-            
-            IQueryable<Account> accountIQ = from a in _context.Accounts
-                                            select a;
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                accountIQ = accountIQ.Where(a => a.UserName.Contains(searchString) || a.Email.Contains(searchString));
-            }
-            return await PaginatedList<Account>.CreateAsync(accountIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
+
+            return accountIQ;
         }
 
         //Get Account matches ID

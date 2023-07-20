@@ -25,13 +25,12 @@ namespace APIRAO.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Account>>> GetAccounts(string? searchString, int pageIndex = 1)
+        public async Task<ActionResult<List<Account>>> GetAccounts(string? searchString)
         {
             try
             {
-                var dto = await accRepo.GetAccounts(searchString, pageIndex);
-                var account = _mapper.Map<List<AccountDTO>>(dto);
-                return Ok(account);
+                var dto = await accRepo.GetAccounts(searchString);
+                return Ok(dto);
             }
             catch
             {

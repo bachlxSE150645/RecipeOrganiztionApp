@@ -27,7 +27,7 @@ namespace APIRAO.Controllers
                     return NotFound();
                 }
                 var rec = recRepo.GetRecipesById(recId);
-                rec.Status = "false";
+                rec.Status = "removed";
                 recRepo.UpdateContributerApprove(rec);
                 return NoContent();
             }
@@ -48,7 +48,7 @@ namespace APIRAO.Controllers
                     return NotFound();
                 }
                 var rec = recRepo.GetRecipesById(recId);
-                rec.Status = "true";
+                rec.Status = "confirm";
                 recRepo.UpdateContributerApprove(rec);
                 return NoContent();
             }

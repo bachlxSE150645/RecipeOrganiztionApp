@@ -10,7 +10,7 @@ namespace Repository.Interfaces
 {
     public interface IAccountRepository
     {
-        Task<List<Account>> GetAccounts(string searchString, int? pageIndex);
+        Task<List<Account>> GetAccounts(string searchString);
         Account GetAccountsById(Guid id);
         Account GetAccountByEmailAndPassword(string email, string password);
         Task<Account> AddAccount(SignUpData account);

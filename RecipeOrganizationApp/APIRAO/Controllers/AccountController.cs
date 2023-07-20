@@ -56,7 +56,7 @@ namespace APIRAO.Controllers
         {
             try
             {
-                return Ok( await accRepo.GetAccounts(searchString,pageIndex));
+                return Ok( await accRepo.GetAccounts(searchString));
             }
             catch
             {

@@ -18,7 +18,7 @@ namespace Repository
 
         private readonly AccountDAO dao;
 
-        public Task<List<Account>> GetAccounts(string searchString, int? pageIndex) => dao.GetAccounts(searchString,pageIndex);
+        public Task<List<Account>> GetAccounts(string searchString) => dao.GetAccounts(searchString);
         public Account GetAccountsById(Guid id) => dao.GetAccountsById(id);
         public Account GetAccountByEmailAndPassword(string email, string password) => dao.GetAccountByEmailAndPassword(email, password);
         public Task<Account> AddAccount(SignUpData account) => dao.AddAccount(account);
