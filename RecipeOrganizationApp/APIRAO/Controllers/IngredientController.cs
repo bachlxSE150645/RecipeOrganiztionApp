@@ -30,6 +30,19 @@ namespace APIRAO.Controllers
             }
 
         }
+        [HttpGet("mod")]
+        public async Task<IActionResult> GetIngredientForMod()
+        {
+            try
+            {
+                return Ok(ingRepo.GetIngredientsForMod());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
 
         [HttpGet("{IngredientId}")]
         public ActionResult<Ingredient> GetIngredientById(Guid IngredientId)
