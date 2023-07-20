@@ -70,20 +70,27 @@ namespace DataAccess
             try
             {
                 var meal = await _context.Meals!.FirstOrDefaultAsync(c => c.MealID.ToString().Equals(order.MealID.ToString()));
-                var orderAdd = new Order
+                if (meal.AccountID.Equals(order.AccountID))
                 {
-                    OrderID = Guid.NewGuid(),
-                    MealID = order.MealID,
-                    AccountID = order.AccountID,
-                    CreateDate = DateTime.Now,
-                    Quantity = order.Quantity,
-                    TotalPrice = meal.Price * order.Quantity,
-                    Status = "waiting",
-                    Detail = order.Detail
-                };
-                _context.Orders.Add(orderAdd);
-                await _context.SaveChangesAsync();
-                return orderAdd;
+                    throw new Exception("The meal's creator is same as the order's account id");
+                }
+                else
+                {
+                    var orderAdd = new Order
+                    {
+                        OrderID = Guid.NewGuid(),
+                        MealID = order.MealID,
+                        AccountID = order.AccountID,
+                        CreateDate = DateTime.Now,
+                        Quantity = order.Quantity,
+                        TotalPrice = meal.Price * order.Quantity,
+                        Status = "waiting",
+                        Detail = order.Detail
+                    };
+                    _context.Orders.Add(orderAdd);
+                    await _context.SaveChangesAsync();
+                    return orderAdd;
+                }
             }
             catch (Exception ex)
             {
